@@ -14,37 +14,20 @@ namespace Parkopolis.API.Controllers
         [HttpGet]
         public IActionResult GetAreas(int cityId)
         {
-            var city = CitiesDataStore.CurrentCities.Cities
-                .FirstOrDefault(c => c.Id == cityId);
-
-            if (city == null)
-            {
-                return NotFound();
-            }
+            if (!Validation.CityExists(cityId)) return NotFound();
 
             return Ok(AreasDataStore.CurrentAreas.Areas.FindAll( a => a.CityId == cityId));
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Getarea(int cityId, int id)
+        [HttpGet("{areaId}")]
+        public IActionResult GetArea(int cityId, int areaId)
         {
-            // find city
-            var cityToReturn = CitiesDataStore.CurrentCities.Cities
-                .FirstOrDefault(c => c.Id == cityId);
+            if (!Validation.CityExists(cityId)) return NotFound();
 
-            if (cityToReturn == null)
-            {
-                return NotFound();
-            }
-            //if (cityId !=)
-            //{
+            if (!Validation.AreaExists(cityId, areaId)) return NotFound();
 
-            //}
-            var result = AreasDataStore.CurrentAreas.Areas.FindAll(a => a.Id == id && cityId == a.CityId);
-            if (result.Count == 0)
-            {
-                return NotFound();
-            }
+            var result = AreasDataStore.CurrentAreas.Areas.FindAll(a => a.Id == areaId && cityId == a.CityId);
+
             return Ok(result);
         }
     }

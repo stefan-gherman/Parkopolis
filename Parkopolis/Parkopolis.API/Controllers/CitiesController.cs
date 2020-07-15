@@ -18,18 +18,12 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCity(int id)
+        public IActionResult GetCity(int cityId)
         {
-            // find city
-            var cityToReturn = CitiesDataStore.CurrentCities.Cities
-                .FirstOrDefault(c => c.Id == id);
+            if (!Validation.CityExists(cityId)) return NotFound();
 
-            if (cityToReturn == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(cityToReturn);
+            return Ok(CitiesDataStore.CurrentCities.Cities
+                .FirstOrDefault(c => c.Id == cityId));
         }
     }
 }
