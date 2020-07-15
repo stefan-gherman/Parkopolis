@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Parkopolis.API.MockData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,22 @@ namespace Parkopolis.API.Controllers
         [HttpGet]
         public IActionResult GetCities()
         {
-            return Ok(CitiesDataStore.Current.Cities);
+            return Ok(CitiesDataStore.CurrentCities.Cities);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetCity(int id)
+        {
+            // find city
+            var cityToReturn = CitiesDataStore.CurrentCities.Cities
+                .FirstOrDefault(c => c.Id == id);
+
+            if (cityToReturn == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(cityToReturn);
         }
     }
 }
