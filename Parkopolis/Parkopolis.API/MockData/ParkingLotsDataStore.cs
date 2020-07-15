@@ -46,6 +46,17 @@ namespace Parkopolis.API.MockData
                     IsStateOwned = false,
                     TotalParkingSpaces = 70,
                     HasSecurity = true
+                },
+                new ParkingLotDto()
+                {
+                    Id = 4,
+                    AreaId = 5,
+                    Name = "CJ Ionescu Parking",
+                    Location = "placeholder for Long/Lat or street",
+                    IsPaid = true,
+                    IsStateOwned = false,
+                    TotalParkingSpaces = 30,
+                    HasSecurity = true
                 }
             };
         }

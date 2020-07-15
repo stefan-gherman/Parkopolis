@@ -29,5 +29,25 @@ namespace Parkopolis.API
             }
             return true;
         }
+
+        public static bool ParkingLotExists(int areaId)
+        {
+            var parkingLots = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FindAll(p => p.AreaId == areaId);
+            if (parkingLots.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool SingleParkingLotExists(int parkingLotId)
+        {
+            var parkingLot = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId);
+            if (parkingLot==null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
