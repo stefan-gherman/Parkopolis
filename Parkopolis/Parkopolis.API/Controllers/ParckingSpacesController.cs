@@ -27,7 +27,23 @@ namespace Parkopolis.API.Controllers
         [HttpPost]
         public IActionResult CreateParkingSpace(int areaid, int parkingLotId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
         {
-            return Ok();
+            var maxParkingSpaceId = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Max(p => p.Id);
+
+            var newParkingSpace= new ParkingSpaceDto()
+            {
+                Id = maxParkingSpaceId + 1,
+                Name = parkingSpace.Name,
+                Details = parkingSpace.Details,
+                HasCarWash = parkingSpace.HasCarWash,
+                IsCovered = parkingSpace.IsCovered,
+                IsTaken = parkingSpace.IsTaken,
+                ParkingLotId = parkingSpace.ParkingLotId,
+                Price = parkingSpace.Price
+            };
+
+            ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Add(newParkingSpace);
+
+            return NoContent();
         }
 
         public IActionResult UpdateParkingSpace(int areaid, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
