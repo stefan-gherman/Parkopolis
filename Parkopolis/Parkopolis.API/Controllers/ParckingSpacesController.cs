@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Parkopolis.API.Models;
 using Parkopolis.API.MockData;
-using System.Threading.Tasks;
+using Parkopolis.API.Models;
+using System.Linq;
 
 namespace Parkopolis.API.Controllers
 {
@@ -29,7 +26,7 @@ namespace Parkopolis.API.Controllers
         {
             var maxParkingSpaceId = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Max(p => p.Id);
 
-            var newParkingSpace= new ParkingSpaceDto()
+            var newParkingSpace = new ParkingSpaceDto()
             {
                 Id = maxParkingSpaceId + 1,
                 Name = parkingSpace.Name,
@@ -46,15 +43,48 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
 
+        [HttpPut("{parkingSpaceId}")]
         public IActionResult UpdateParkingSpace(int areaid, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
         {
-            return Ok();
+            var getParkingSpaceForUpdate = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FirstOrDefault(p => p.Id == parkingSpaceId);
+
+            getParkingSpaceForUpdate.Name = parkingSpace.Name;
+            getParkingSpaceForUpdate.Details = parkingSpace.Details;
+            getParkingSpaceForUpdate.HasCarWash = parkingSpace.HasCarWash;
+            getParkingSpaceForUpdate.IsCovered = parkingSpace.IsCovered;
+            getParkingSpaceForUpdate.IsTaken = parkingSpace.IsTaken;
+            getParkingSpaceForUpdate.ParkingLotId = parkingSpace.ParkingLotId;
+            getParkingSpaceForUpdate.Price = parkingSpace.Price;
+
+            return NoContent();
         }
+
         public IActionResult PartiallyUpdateParkingSpace(int areaId, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
         {
-            return Ok();
+            //var parkingSpaceFromStore = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FirstOrDefault(p => p.Id == parkingSpaceId);
 
+            //var parkingSpaceToPatch = new ParkingSpaceForUpdateDto()
+            //{
+            //    Name = parkingSpaceFromStore.Name,
+            //    Details = parkingSpaceFromStore.Details,
+            //    HasCarWash = parkingSpaceFromStore.HasCarWash,
+            //    IsCovered = parkingSpaceFromStore.IsCovered,
+            //    IsTaken = parkingSpaceFromStore.IsTaken,
+            //    ParkingLotId = parkingSpaceFromStore.ParkingLotId,
+            //    Price = parkingSpaceFromStore.Price
+            //};
+
+            //patchDoc.ApplyTo(parkingSpaceToPatch);
+
+            //parkingSpaceToPatch.Name = parkingSpaceToPatch.Name,
+            //    parkingSpaceToPatch.Details = parkingSpaceToPatch.Details,
+            //    parkingSpaceToPatch.HasCarWash = parkingSpaceToPatch.HasCarWash,
+            //    parkingSpaceToPatch.IsCovered = parkingSpaceToPatch.IsCovered,
+            //    parkingSpaceToPatch.IsTaken = parkingSpaceToPatch.IsTaken,
+            //    parkingSpaceToPatch.ParkingLotId = parkingSpaceToPatch.ParkingLotId,
+            //    parkingSpaceToPatch.Price = parkingSpaceToPatch.Price
+
+            return NoContent();
         }
-
     }
 }
