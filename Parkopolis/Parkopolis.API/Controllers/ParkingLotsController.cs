@@ -54,9 +54,20 @@ namespace Parkopolis.API.Controllers
             ParkingLotsDataStore.CurrentParkingLots.ParkingLots.Add(newParkingLot);
         }
 
-        public void UpdateParkingLot(int areaId, [FromBody] ParkingLotForCreationDto parkingLot)
+        [HttpPut("{parkingLotId}")]
+        public IActionResult UpdateParkingLot(int areaId, int parkingLotId, [FromBody] ParkingLotForCreationDto parkingLot)
         {
+            var getParkingLotForUpdate = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId);
 
+            getParkingLotForUpdate.Name = parkingLot.Name;
+            getParkingLotForUpdate.AreaId = parkingLot.AreaId;
+            getParkingLotForUpdate.HasSecurity = parkingLot.HasSecurity;
+            getParkingLotForUpdate.IsPaid = parkingLot.IsPaid;
+            getParkingLotForUpdate.IsStateOwned = parkingLot.IsStateOwned;
+            getParkingLotForUpdate.Location = parkingLot.Location;
+            getParkingLotForUpdate.TotalParkingSpaces = parkingLot.TotalParkingSpaces;
+
+            return NoContent();
         }
 
         public void PartiallyUpdateParkingLot(int areaId, int id, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
