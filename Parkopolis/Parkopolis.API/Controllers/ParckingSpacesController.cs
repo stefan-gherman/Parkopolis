@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
 using Parkopolis.API.Models;
 using System.Linq;
@@ -59,30 +60,32 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
 
-        public IActionResult PartiallyUpdateParkingSpace(int areaId, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
+        [HttpPatch("{parkingSpaceId}")]
+        public IActionResult PartiallyUpdateParkingSpace(int areaId, int parkingLotId, int parkingSpaceId,
+            [FromBody] JsonPatchDocument<ParkingSpaceForUpdateDto> patchDoc)
         {
-            //var parkingSpaceFromStore = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FirstOrDefault(p => p.Id == parkingSpaceId);
+            var parkingSpaceFromStore = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FirstOrDefault(p => p.Id == parkingSpaceId);
 
-            //var parkingSpaceToPatch = new ParkingSpaceForUpdateDto()
-            //{
-            //    Name = parkingSpaceFromStore.Name,
-            //    Details = parkingSpaceFromStore.Details,
-            //    HasCarWash = parkingSpaceFromStore.HasCarWash,
-            //    IsCovered = parkingSpaceFromStore.IsCovered,
-            //    IsTaken = parkingSpaceFromStore.IsTaken,
-            //    ParkingLotId = parkingSpaceFromStore.ParkingLotId,
-            //    Price = parkingSpaceFromStore.Price
-            //};
+            var parkingSpaceToPatch = new ParkingSpaceForUpdateDto()
+            {
+                Name = parkingSpaceFromStore.Name,
+                Details = parkingSpaceFromStore.Details,
+                HasCarWash = parkingSpaceFromStore.HasCarWash,
+                IsCovered = parkingSpaceFromStore.IsCovered,
+                IsTaken = parkingSpaceFromStore.IsTaken,
+                ParkingLotId = parkingSpaceFromStore.ParkingLotId,
+                Price = parkingSpaceFromStore.Price
+            };
 
-            //patchDoc.ApplyTo(parkingSpaceToPatch);
+            patchDoc.ApplyTo(parkingSpaceToPatch);
 
-            //parkingSpaceToPatch.Name = parkingSpaceToPatch.Name,
-            //    parkingSpaceToPatch.Details = parkingSpaceToPatch.Details,
-            //    parkingSpaceToPatch.HasCarWash = parkingSpaceToPatch.HasCarWash,
-            //    parkingSpaceToPatch.IsCovered = parkingSpaceToPatch.IsCovered,
-            //    parkingSpaceToPatch.IsTaken = parkingSpaceToPatch.IsTaken,
-            //    parkingSpaceToPatch.ParkingLotId = parkingSpaceToPatch.ParkingLotId,
-            //    parkingSpaceToPatch.Price = parkingSpaceToPatch.Price
+            parkingSpaceFromStore.Name = parkingSpaceToPatch.Name;
+            parkingSpaceFromStore.Details = parkingSpaceToPatch.Details;
+            parkingSpaceFromStore.HasCarWash = parkingSpaceToPatch.HasCarWash;
+            parkingSpaceFromStore.IsCovered = parkingSpaceToPatch.IsCovered;
+            parkingSpaceFromStore.IsTaken = parkingSpaceToPatch.IsTaken;
+            parkingSpaceFromStore.ParkingLotId = parkingSpaceToPatch.ParkingLotId;
+            parkingSpaceFromStore.Price = parkingSpaceToPatch.Price;
 
             return NoContent();
         }
