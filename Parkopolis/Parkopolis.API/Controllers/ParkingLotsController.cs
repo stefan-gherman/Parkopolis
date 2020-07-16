@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Parkopolis.API.Models;
-using Microsoft.AspNetCore.JsonPatch;
-using Parkopolis.API.MockData;
+using System.Linq;
 
 namespace Parkopolis.API.Controllers
 {
@@ -70,15 +66,37 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
 
-        public void PartiallyUpdateParkingLot(int areaId, int id, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
+        [HttpPatch("{parkingLotId}")]
+        public IActionResult PartiallyUpdateParkingLot(int areaId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
         {
+            var parkingLotFromStore = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId);
 
+            var parkingLotToPatch = new ParkingLotForUpdateDto()
+            {
+                Name = parkingLotFromStore.Name,
+                AreaId = parkingLotFromStore.AreaId,
+                HasSecurity = parkingLotFromStore.HasSecurity,
+                IsPaid = parkingLotFromStore.IsPaid,
+                IsStateOwned = parkingLotFromStore.IsStateOwned,
+                Location = parkingLotFromStore.Location,
+                TotalParkingSpaces = parkingLotFromStore.TotalParkingSpaces
+            };
+
+            patchDoc.ApplyTo(parkingLotToPatch);
+
+            parkingLotFromStore.Name = parkingLotToPatch.Name;
+            parkingLotFromStore.AreaId = parkingLotToPatch.AreaId;
+            parkingLotFromStore.HasSecurity = parkingLotToPatch.HasSecurity;
+            parkingLotFromStore.IsPaid = parkingLotToPatch.IsPaid;
+            parkingLotFromStore.IsStateOwned = parkingLotToPatch.IsStateOwned;
+            parkingLotFromStore.Location = parkingLotToPatch.Location;
+            parkingLotFromStore.TotalParkingSpaces = parkingLotToPatch.TotalParkingSpaces;
+
+            return NoContent();
         }
 
         public void DeleteParkingLot(int areaId, int id)
         {
-
         }
     }
-
 }
