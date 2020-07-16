@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Parkopolis.API.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Parkopolis.API.MockData;
 
 namespace Parkopolis.API.Controllers
 {
@@ -33,9 +34,24 @@ namespace Parkopolis.API.Controllers
             return Ok(ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId));
         }
 
+        [HttpPost]
         public void CreateParkingLot(int areaid, [FromBody] ParkingLotForCreationDto parkingLot)
         {
+            var maxParkingLotId = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.Max(p => p.Id);
 
+            var newParkingLot = new ParkingLotDto()
+            {
+                Id = maxParkingLotId + 1,
+                Name = parkingLot.Name,
+                AreaId = parkingLot.AreaId,
+                HasSecurity = parkingLot.HasSecurity,
+                IsPaid = parkingLot.IsPaid,
+                IsStateOwned = parkingLot.IsStateOwned,
+                Location = parkingLot.Location,
+                TotalParkingSpaces = parkingLot.TotalParkingSpaces
+            };
+
+            ParkingLotsDataStore.CurrentParkingLots.ParkingLots.Add(newParkingLot);
         }
 
         public void UpdateParkingLot(int areaId, [FromBody] ParkingLotForCreationDto parkingLot)
