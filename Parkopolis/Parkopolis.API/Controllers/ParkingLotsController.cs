@@ -95,8 +95,14 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
 
-        public void DeleteParkingLot(int areaId, int id)
+        [HttpDelete("{parkingLotId}")]
+        public IActionResult DeleteParkingLot(int areaId, int parkingLotId)
         {
+            var parkingLotToDelete = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId);
+
+            ParkingLotsDataStore.CurrentParkingLots.ParkingLots.Remove(parkingLotToDelete);
+
+            return NoContent();
         }
     }
 }
