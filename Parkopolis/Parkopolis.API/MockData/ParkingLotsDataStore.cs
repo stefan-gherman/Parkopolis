@@ -8,7 +8,7 @@ namespace Parkopolis.API.MockData
 {
     public class ParkingLotsDataStore
     {
-        public static ParkingLotsDataStore CurrentParkingLots { get; } = new ParkingLotsDataStore();
+        public static ParkingLotsDataStore CurrentParkingLots { get; set; } = new ParkingLotsDataStore();
         public List<ParkingLotDto> ParkingLots { get; set; }
         public ParkingLotsDataStore()
         {
