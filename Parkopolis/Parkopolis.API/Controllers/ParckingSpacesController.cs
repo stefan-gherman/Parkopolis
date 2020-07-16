@@ -8,5 +8,6 @@ namespace Parkopolis.API.Controllers
 {
     public class ParckingSpacesController : ControllerBase
     {
+
     }
 }
