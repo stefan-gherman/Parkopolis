@@ -17,7 +17,7 @@ namespace Parkopolis.API.Controllers
             return Ok(CitiesDataStore.CurrentCities.Cities);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{cityId}")]
         public IActionResult GetCity(int cityId)
         {
             if (!Validation.CityExists(cityId)) return NotFound();
