@@ -31,7 +31,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateParkingLot(int areaid, [FromBody] ParkingLotForCreationDto parkingLot)
+        public IActionResult CreateParkingLot(int areaId, [FromBody] ParkingLotForCreationDto parkingLot)
         {
             var maxParkingLotId = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.Max(p => p.Id);
 

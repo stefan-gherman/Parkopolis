@@ -8,7 +8,7 @@ namespace Parkopolis.API.Controllers
 {
     [ApiController]
     [Route("api/cities/{cityId}/areas/{areaId}/parkinglots/{parkingLotId}/parkingspaces")]
-    public class ParckingSpacesController : ControllerBase
+    public class ParkingSpacesController : ControllerBase
     {
         [HttpGet]
         public IActionResult GetParkingSpaces(int parkingLotId)
@@ -23,7 +23,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateParkingSpace(int areaid, int parkingLotId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
+        public IActionResult CreateParkingSpace(int areaId, int parkingLotId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
         {
             var maxParkingSpaceId = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Max(p => p.Id);
 
