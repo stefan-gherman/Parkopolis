@@ -19,8 +19,9 @@ $("#newCitySubmit").click(function () {
     console.log($("#cityName").val());
     let newCityName = $("#cityName").val();
     //alert(name);
-    let data = {};
-    data[name] = newCityName;
+    let data = { "name": newCityName};
+    //data[name] = newCityName;
+    console.log(data);
     
     $.ajax({
         type: "POST",
@@ -37,7 +38,5 @@ $("#newCitySubmit").click(function () {
             console.log(jqXHR);
             alert('fail' + status.code);
         }
-
     })
-
 });
