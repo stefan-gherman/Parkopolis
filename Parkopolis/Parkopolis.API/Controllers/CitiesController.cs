@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
+using Parkopolis.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,21 @@ namespace Parkopolis.API.Controllers
 
             return Ok(CitiesDataStore.CurrentCities.Cities
                 .FirstOrDefault(c => c.Id == cityId));
+        }
+
+        [HttpPost]
+        public IActionResult CreateCity([FromBody] CityDto city)
+        {
+            var maxCitytId = CitiesDataStore.CurrentCities.Cities.Max(c => c.Id);
+
+            var newCity = new CityDto()
+            {
+                Id = maxCitytId + 1,
+                Name = city.Name
+            };
+            CitiesDataStore.CurrentCities.Cities.Add(newCity);
+
+            return NoContent();
         }
     }
 }
