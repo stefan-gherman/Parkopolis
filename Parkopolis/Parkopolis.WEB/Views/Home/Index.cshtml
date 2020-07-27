@@ -1,21 +1,23 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Parkopolis";
 }
 
     <form>
         <div class="form-group">
-            <label for="exampleFormControlSelect1">City</label>
+            @*<label for="exampleFormControlSelect1">City</label>*@
             <select class="form-control" id="exampleFormControlSelect1">
-                <option>Bucharest</option>
-                <option>Cluj-Napoca</option>
+                <option value="" disabled selected hidden>City</option>
+                <option value="Bucharest">Bucharest</option>
+                <option value="Cluj-Napoca">Cluj-Napoca</option>
             </select>
         </div>
     </form>
 
     <form>
         <div class="form-group">
-            <label for="exampleFormControlSelect1">Area</label>
+            @*<label for="exampleFormControlSelect1">Area</label>*@
             <select class="form-control" id="exampleFormControlSelect1">
+                <option value="" disabled selected hidden>Area</option>
                 <option>Union Square</option>
                 <option>University Square</option>
                 <option>Obor Square</option>
@@ -25,8 +27,9 @@
 
     <form>
         <div class="form-group">
-            <label for="exampleFormControlSelect1">Parking Lot</label>
+            @*<label for="exampleFormControlSelect1">Parking Lot</label>*@
             <select class="form-control" id="exampleFormControlSelect1">
+                <option value="" disabled selected hidden>Parking Lot</option>
                 <option>Ionescu Parking</option>
                 <option>Popescu Parking</option>
                 <option>Flexible Spaces</option>
@@ -35,14 +38,51 @@
     </form>
 
     <ul class="list-group">
-        <li class="list-group-item">IP 101 ...</li>
-        <li class="list-group-item">IP 102 ...</li>
-        <li class="list-group-item">IP 103 ...</li>
-        <li class="list-group-item">IP 104 ...</li>
-        <li class="list-group-item">PP 101 ...</li>
-        <li class="list-group-item">PP 102 ...</li>
-        <li class="list-group-item">PP 201 ...</li>
-        <li class="list-group-item">PP 202 ...</li>
-        
-        
+        <li class="list-group-item">
+            <div class="container">
+                <div class="d-flex justify-content-between">
+                    <p>IP 101</p>
+                    <p>
+                        <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                    </p>
+                    <a href="#" class="btn btn-success">Take</a>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="container">
+                <div class="d-flex justify-content-between">
+                    <p>IP 102</p>
+                    <p>
+                        <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                    </p>
+                    <a href="#" class="btn btn-success">Take</a>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="container">
+                <div class="d-flex justify-content-between">
+                    <p>IP 103</p>
+                    <p>
+                        <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                    </p>
+                    <a href="#" class="btn btn-success">Take</a>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="container">
+                <div class="d-flex justify-content-between">
+                    <p>IP 105</p>
+                    <p>
+                        <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                    </p>
+                    <a href="#" class="btn btn-success">Take</a>
+                </div>
+            </div>
+        </li>
+
+
+
     </ul>
