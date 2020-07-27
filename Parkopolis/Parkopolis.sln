@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parkopolis.API", "Parkopolis.API\Parkopolis.API.csproj", "{39CCC21A-90DB-4E97-9C2D-6E203047CD63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parkopolis.API", "Parkopolis.API\Parkopolis.API.csproj", "{39CCC21A-90DB-4E97-9C2D-6E203047CD63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkopolisDAL", "ParkopolisDAL\ParkopolisDAL.csproj", "{CAA4B19A-D1D9-44EB-9F48-4AAAA40B3626}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parkopolis.WEB", "Parkopolis.WEB\Parkopolis.WEB.csproj", "{FCD8133F-4F86-436C-AF94-D7B3BA55F4BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{39CCC21A-90DB-4E97-9C2D-6E203047CD63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39CCC21A-90DB-4E97-9C2D-6E203047CD63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39CCC21A-90DB-4E97-9C2D-6E203047CD63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA4B19A-D1D9-44EB-9F48-4AAAA40B3626}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA4B19A-D1D9-44EB-9F48-4AAAA40B3626}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA4B19A-D1D9-44EB-9F48-4AAAA40B3626}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA4B19A-D1D9-44EB-9F48-4AAAA40B3626}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCD8133F-4F86-436C-AF94-D7B3BA55F4BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD8133F-4F86-436C-AF94-D7B3BA55F4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD8133F-4F86-436C-AF94-D7B3BA55F4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD8133F-4F86-436C-AF94-D7B3BA55F4BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

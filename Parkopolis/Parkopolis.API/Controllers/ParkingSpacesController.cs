@@ -45,7 +45,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPut("{parkingSpaceId}")]
-        public IActionResult UpdateParkingSpace(int areaid, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
+        public IActionResult UpdateParkingSpace(int areaId, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
         {
             var getParkingSpaceForUpdate = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FirstOrDefault(p => p.Id == parkingSpaceId);
 
