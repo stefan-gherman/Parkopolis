@@ -19,6 +19,6 @@ namespace Parkopolis.API.Models
 
         //Navigation Properties
 
-        ParkingLot ParkingLot { get; set; }
+       public ParkingLot ParkingLot { get; set; }
     }
 }
