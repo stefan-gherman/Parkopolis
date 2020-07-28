@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Parkopolis.API.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Parkopolis.API.Context
 {
-    public class ParkopolisDbContext : DbContext
+    public class ParkopolisDbContext : IdentityDbContext
     {
         public ParkopolisDbContext(DbContextOptions<ParkopolisDbContext> options) : base(options)
         {
@@ -26,7 +27,7 @@ namespace Parkopolis.API.Context
             model.Entity<City>().ToTable("City");
             model.Entity<ParkingLot>().ToTable("ParkingLot");
             model.Entity<ParkingSpace>().ToTable("ParkingSpaces");
-
+            base.OnModelCreating(model);
         }
     }
 }
