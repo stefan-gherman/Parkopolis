@@ -19,8 +19,8 @@ namespace Parkopolis.API.Models
         //public DateTime FreeInterval { get; set; }
 
         //Navigation Properties
-        public Area Area { get; set; }
-        public User User { get; set; }
+        //public Area Area { get; set; }
+        //public User User { get; set; }
         public ICollection<ParkingSpace> ParkingSpaces { get; set; }
 
     }

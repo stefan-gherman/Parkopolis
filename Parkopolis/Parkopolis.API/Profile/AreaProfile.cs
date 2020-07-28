@@ -11,7 +11,7 @@ namespace Parkopolis.API.Profile
     {
         public AreaProfile()
         {
-            CreateMap<Models.Area, Models.AreaForDisplayDto>();
+            CreateMap<Models.Area, Models.AreaForDisplayDto>().ReverseMap();
         }
     }
 
