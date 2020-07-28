@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Parkopolis.API.Context;
 using Microsoft.EntityFrameworkCore;
+using Parkopolis.API.Services;
 
 namespace Parkopolis.API
 {
@@ -39,6 +40,7 @@ namespace Parkopolis.API
             //});
             var connectionString = Configuration.GetConnectionString("ConnectionStrings");
             services.AddDbContext<ParkopolisDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IParkopolisRepository, ParkopolisDbRepository>();
             services.AddSwaggerGen();
         }
 
