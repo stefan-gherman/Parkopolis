@@ -31,30 +31,33 @@ $("#newCitySubmit").click(async function () {
 
 // Submitting a new Area in a City
 $("#newAreaSubmit").click(async function () {
+    let cityId = $("#selectCityAddArea").val();
     let newAreaName = await $("#areaNameAddArea").val();
-    //alert(newAreaName);
-    let cityIdValue = 0;
 
-    //let data = { "name": newCityName };
-    ////data[name] = newCityName;
-    //console.log(data);
+    let data = {
 
-    //$.ajax({
-    //    type: "POST",
-    //    url: "http://localhost:1028/api/cities",
-    //    data: JSON.stringify(data),
-    //    contentType: "application/json; charset=utf-8",
-    //    crossDomain: true,
-    //    dataType: "json",
-    //    success: function () {
-    //        alert("success");
-    //    },
-    //    error: function (jqXHR, status) {
-    //        // error handler
-    //        console.log(jqXHR);
-    //        alert('fail' + status.code);
-    //    }
-    //})
+        "name": newAreaName,
+        "cityId": cityId,
+    }
+
+    $.ajax({
+        type: "POST",
+        url: `http://localhost:1028/api/cities/${cityId}/areas`,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        success: function () {
+            alert("success");
+        },
+        error: function (jqXHR, status) {
+            // error handler
+            console.log(jqXHR);
+            alert('fail' + status.code);
+        }
+    })
+    
+    alert("Check DB");
 });
 
 async function getCitiesFromDb() {
