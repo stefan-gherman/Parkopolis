@@ -5,13 +5,25 @@
 
 <h1>Parking Lot Admin</h1>
 
-<p>Ionescu Parking<p>
-    <ul>
-        <li>IP 101 <button class="btn btn-outline-danger">Delete</button></li>
-        <li>IP 102 <button class="btn btn-outline-danger">Delete</button></li>
-        <li>IP 103 <button class="btn btn-outline-danger">Delete</button></li>
-    </ul>
-    <button class="btn btn-outline-success">Add Parking Space</button>
+<h3 id="parkingLotId1">Ionescu Parking hardcoded for now</h3>
+    <hr />
+
+<div class="container">
+    <div class="list-group" id="parkingSpaceList">
+        <a href="#" class="list-group-item list-group-item-action list-group-item-success">TEST AVAILABLE</a>
+        <a href="#" class="list-group-item list-group-item-action list-group-item-danger">TEST TAKEN</a>
+    </div>
+</div>
+    <hr />
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control" id="parkingSpaceName" placeholder="Enter the Parking Space Name here.">
+    </div>
+    <button id="newParkingSpaceSubmit" type="submit" class="btn btn-primary">Add Parking Space</button>
+
+</form>
+    
+    
 
 
     @section Scripts {
