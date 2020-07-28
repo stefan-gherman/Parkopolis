@@ -2,7 +2,7 @@
 getCitiesFromDb();
 
 // Submitting a new city
-$("#newCitySubmit").click(function () {
+$("#newCitySubmit").click(async function () {
     console.log($("#cityName").val());
     let newCityName = $("#cityName").val();
     //alert(name);
@@ -10,7 +10,7 @@ $("#newCitySubmit").click(function () {
     //data[name] = newCityName;
     console.log(data);
     
-    $.ajax({
+    await $.ajax({
         type: "POST",
         url: "http://localhost:1028/api/cities",
         data: JSON.stringify(data),
@@ -18,7 +18,7 @@ $("#newCitySubmit").click(function () {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            alert("success");
+            console.log("City added successfully.");
         },
         error: function (jqXHR, status) {
             // error handler
@@ -26,6 +26,7 @@ $("#newCitySubmit").click(function () {
             alert('fail' + status.code);
         }
     })
+    getCitiesFromDb();
 });
 
 // Submitting a new Area in a City
@@ -65,6 +66,7 @@ async function getCitiesFromDb() {
     populateCities();
     populateCitiesSelectAddArea();
     populateCitiesSelectAddParkingLot();
+    allCities = [];
 }
 
 function populateCities() {

@@ -4,11 +4,8 @@
 
 <form>
     <div class="form-group">
-        @*<label for="exampleFormControlSelect1">City</label>*@
-        <select class="form-control" id="exampleFormControlSelect1">
+        <select class="form-control" id="selectCityHome">
             <option value="" disabled selected hidden>City</option>
-            <option value="Bucharest">Bucharest</option>
-            <option value="Cluj-Napoca">Cluj-Napoca</option>
         </select>
     </div>
 </form>
@@ -84,3 +81,7 @@
     </li>
 </ul>
 
+@section Scripts {
+    <script src="~/js/home.js"></script>
+
+}
