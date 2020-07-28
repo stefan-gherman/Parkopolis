@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Parkopolis.API.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using Parkopolis.API.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Parkopolis.API
 {
@@ -35,6 +37,8 @@ namespace Parkopolis.API
             //    swaggerGen.SwaggerDoc("v1", new OpenApiInfo { Title = "a", Version="1"});
 
             //});
+            var connectionString = Configuration.GetConnectionString("ConnectionStrings");
+            services.AddDbContext<ParkopolisDbContext>(options => options.UseSqlServer(connectionString));
             services.AddSwaggerGen();
         }
 
