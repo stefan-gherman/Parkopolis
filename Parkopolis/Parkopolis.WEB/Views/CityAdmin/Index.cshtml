@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "City Admin";
+}
+
+<h1>City Admin</h1>
+
+<div id="citiesContainer">
+
+</div>
+<hr />
+
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control" id="cityName" placeholder="Enter the City name here.">
+    </div>
+    <button id="newCitySubmit" type="submit" class="btn btn-primary">Add City</button>
+
+</form>
+
+
+@section Scripts {
+    <script src="~/js/cityAdmin.js"></script>
+
+}
