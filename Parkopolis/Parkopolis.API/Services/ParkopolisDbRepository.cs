@@ -19,12 +19,14 @@ namespace Parkopolis.API.Services
 
         public void AddArea(Area area)
         {
-            throw new NotImplementedException();
+            _context.Areas.Add(area);
+            Save();
         }
 
         public void AddCity(City cityToAdd)
         {
             _context.Cities.Add(cityToAdd);
+            Save();
         }
 
         public bool AreaExists(int id)
@@ -53,10 +55,7 @@ namespace Parkopolis.API.Services
            return  _context.Cities.ToList();
         }
 
-        public void GetAreaById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public City GetCityById(int id)
         {
@@ -65,7 +64,8 @@ namespace Parkopolis.API.Services
 
         public void RemoveArea(Area area)
         {
-            throw new NotImplementedException();
+            _context.Areas.Remove(area);
+            Save();
         }
 
         public void RemoveCity(City city)
@@ -79,9 +79,9 @@ namespace Parkopolis.API.Services
             _context.SaveChanges();
         }
 
-        Area IParkopolisRepository.GetAreaById(int id)
+        public Area GetAreaById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Areas.Where(a => a.Id == id).FirstOrDefault();
         }
     }
 }
