@@ -4,16 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Parkopolis.API.Models;
 using Parkopolis.WEB.Models;
 
 namespace Parkopolis.WEB.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -30,7 +31,8 @@ namespace Parkopolis.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { Email = model.Email, UserName = model.Email };
+                var user = new ApplicationUser { Email = model.Email, UserName = model.Email, FirstName = model.FirstName
+                , LastName = model.LastName};
                
                 var result=  await userManager.CreateAsync(user, model.Password);
                 

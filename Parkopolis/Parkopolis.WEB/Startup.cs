@@ -30,7 +30,7 @@ namespace Parkopolis.WEB
 
             services.AddDbContext<ParkopolisDbContext>(options => 
             options.UseSqlServer(connectionString));
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ParkopolisDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ParkopolisDbContext>();
 
         }
 

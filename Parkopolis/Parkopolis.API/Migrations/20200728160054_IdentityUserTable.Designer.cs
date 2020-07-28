@@ -10,8 +10,8 @@ using Parkopolis.API.Context;
 namespace Parkopolis.API.Migrations
 {
     [DbContext(typeof(ParkopolisDbContext))]
-    [Migration("20200728145908_IdentityMigration")]
-    partial class IdentityMigration
+    [Migration("20200728160054_IdentityUserTable")]
+    partial class IdentityUserTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -285,14 +285,9 @@ namespace Parkopolis.API.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserViewModelId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AreaId");
-
-                    b.HasIndex("UserViewModelId");
 
                     b.ToTable("ParkingLot");
                 });
@@ -330,43 +325,6 @@ namespace Parkopolis.API.Migrations
                     b.HasIndex("ParkingLotId");
 
                     b.ToTable("ParkingSpaces");
-                });
-
-            modelBuilder.Entity("Parkopolis.API.Models.UserViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(12)")
-                        .HasMaxLength(12);
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(12)")
-                        .HasMaxLength(12);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -436,10 +394,6 @@ namespace Parkopolis.API.Migrations
                         .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Parkopolis.API.Models.UserViewModel", null)
-                        .WithMany("ParkingLots")
-                        .HasForeignKey("UserViewModelId");
                 });
 
             modelBuilder.Entity("Parkopolis.API.Models.ParkingSpace", b =>

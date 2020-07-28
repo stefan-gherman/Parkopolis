@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace Parkopolis.API.Context
 {
-    public class ParkopolisDbContext : IdentityDbContext
+    public class ParkopolisDbContext : IdentityDbContext<ApplicationUser>
     {
         public ParkopolisDbContext(DbContextOptions<ParkopolisDbContext> options) : base(options)
         {
         }
 
-        public DbSet<UserViewModel> Users { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<ParkingLot> ParkingLots { get; set; }
@@ -22,7 +21,6 @@ namespace Parkopolis.API.Context
 
         protected override void OnModelCreating(ModelBuilder model)
         {
-            model.Entity<UserViewModel>().ToTable("User");
             model.Entity<Area>().ToTable("Area");
             model.Entity<City>().ToTable("City");
             model.Entity<ParkingLot>().ToTable("ParkingLot");
