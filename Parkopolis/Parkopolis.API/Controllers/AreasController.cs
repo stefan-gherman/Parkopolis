@@ -51,10 +51,10 @@ namespace Parkopolis.API.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult AddArea([FromBody] Area area, int cityId)
         {
-            if (!_repo.CityExists(area.CityId))
-            {
-                return NotFound("City in request body does not exist");
-            }
+            //if (!_repo.CityExists(area.CityId))
+            //{
+            //    return NotFound("City in request body does not exist");
+            //}
 
             area.CityId = cityId;
 

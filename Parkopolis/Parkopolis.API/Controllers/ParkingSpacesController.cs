@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
 using Parkopolis.API.Models;
+using Parkopolis.API.Services;
 using System.Linq;
 
 namespace Parkopolis.API.Controllers
@@ -11,37 +13,48 @@ namespace Parkopolis.API.Controllers
     [Route("api/cities/{cityId}/areas/{areaId}/parkinglots/{parkingLotId}/parkingspaces")]
     public class ParkingSpacesController : ControllerBase
     {
-        [HttpGet]
+        IParkopolisRepository _repo;
+        IMapper _mapper;
+        public ParkingSpacesController(IMapper mapper, IParkopolisRepository repo)
+        {
+            _mapper = mapper;
+            _repo = repo;
+        }
+        [HttpGet] 
         public IActionResult GetParkingSpaces(int parkingLotId)
         {
-            return Ok(ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FindAll(p => p.ParkingLotId == parkingLotId));
+            return Ok(_repo.GetParkingSpaces(parkingLotId));
+            //return Ok(ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FindAll(p => p.ParkingLotId == parkingLotId));
         }
 
         [HttpGet("{parkingSpaceId}")]
         public IActionResult GetParkingSpace(int parkingLotId, int parkingSpaceId)
         {
-            return Ok(ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FindAll(p => p.Id == parkingLotId));
+            return Ok(_repo.GetParkingSpaceById(parkingSpaceId));
+            //return Ok(ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FindAll(p => p.Id == parkingLotId));
         }
 
         [HttpPost]
         [EnableCors("AllowAnyOrigin")]
-        public IActionResult CreateParkingSpace(int areaId, int parkingLotId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
+        public IActionResult CreateParkingSpace(int areaId, int parkingLotId, [FromBody] ParkingSpace parkingSpace)
         {
-            var maxParkingSpaceId = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Max(p => p.Id);
+            //var maxParkingSpaceId = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Max(p => p.Id);
 
-            var newParkingSpace = new ParkingSpaceDto()
-            {
-                Id = maxParkingSpaceId + 1,
-                Name = parkingSpace.Name,
-                Details = parkingSpace.Details,
-                HasCarWash = parkingSpace.HasCarWash,
-                IsCovered = parkingSpace.IsCovered,
-                IsTaken = parkingSpace.IsTaken,
-                ParkingLotId = parkingSpace.ParkingLotId,
-                Price = parkingSpace.Price
-            };
+            //var newParkingSpace = new ParkingSpaceDto()
+            //{
+            //    Id = maxParkingSpaceId + 1,
+            //    Name = parkingSpace.Name,
+            //    Details = parkingSpace.Details,
+            //    HasCarWash = parkingSpace.HasCarWash,
+            //    IsCovered = parkingSpace.IsCovered,
+            //    IsTaken = parkingSpace.IsTaken,
+            //    ParkingLotId = parkingSpace.ParkingLotId,
+            //    Price = parkingSpace.Price
+            //};
 
-            ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Add(newParkingSpace);
+            //ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Add(newParkingSpace);
+
+            _repo.AddParkingSpace(parkingSpace);
 
             return NoContent();
         }
@@ -95,9 +108,9 @@ namespace Parkopolis.API.Controllers
         [HttpDelete("{parkingSpaceId}")]
         public IActionResult DeleteParkingLot(int areaId, int parkingSpaceId)
         {
-            var parkingLotToDelete = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FirstOrDefault(p => p.Id == parkingSpaceId);
 
-            ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Remove(parkingLotToDelete);
+
+            _repo.RemoveParkingSpace(_repo.GetParkingSpaceById(parkingSpaceId));
 
             return NoContent();
         }
