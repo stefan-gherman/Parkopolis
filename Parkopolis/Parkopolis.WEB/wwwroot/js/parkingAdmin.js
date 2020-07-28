@@ -1,4 +1,6 @@
 ﻿console.log("eet works");
+let parkingSpacesList = [];
+populateParkingLot();
 
 $("#newParkingSpaceSubmit").click(async function () {
     let parkingLotId = await $("h3").first().attr("id").replace("parkingLotId", "");
@@ -35,3 +37,24 @@ $("#newParkingSpaceSubmit").click(async function () {
         }
     })
 });
+
+async function populateParkingLot() {
+
+    let parkingLotId = await $("h3").first().attr("id").replace("parkingLotId", "");
+    $.getJSON(`http://localhost:1028/api/cities/1/areas/1/parkinglots/${parkingLotId}/parkingspaces`, function (data) {
+        for (var i = 0; i < data.length; i++) {
+            //parkingSpacesList.push(data[i]);
+            
+            if (data[i].isTaken === false) {
+                $("#parkingSpaceList").append(
+                    `<a href="#" class="list-group-item list-group-item-action list-group-item-success">${data[i].name}</a>`
+                );
+            } else {
+                $("#parkingSpaceList").append(
+                    `<a href="#" class="list-group-item list-group-item-action list-group-item-danger">${data[i].name}</a>`
+                );
+            }   
+        }
+    });
+
+}
