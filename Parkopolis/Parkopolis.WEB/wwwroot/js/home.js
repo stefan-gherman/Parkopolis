@@ -2,7 +2,8 @@
 
 $("#selectCityHome").change(function () {
     populateAreasDropdown();
-    // clear parkinglots and spaces eventually?
+    resetParkingLotsDropdown();
+    $("#resultingParkingSpaces").empty();
 });
 
 $("#selectAreaHome").change(function () {
@@ -25,9 +26,7 @@ async function populateCitiesDropdown() {
 
 async function populateAreasDropdown() {
     let cityId = $("#selectCityHome").val();
-    let initialElement = `<option value="" disabled selected hidden>Area</option>`;
-    $("#selectAreaHome").empty();
-    $("#selectAreaHome").append(initialElement);
+    resetAreasDropdown();
     await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas`, function (data) {
         for (var i = 0; i < data.length; i++) {
             let element = `<option value="${data[i].id}">${data[i].name}</option>`;
@@ -36,12 +35,16 @@ async function populateAreasDropdown() {
     })
 }
 
+function resetAreasDropdown(){
+    let initialElement = `<option value="" disabled selected hidden>Area</option>`;
+    $("#selectAreaHome").empty();
+    $("#selectAreaHome").append(initialElement);
+}
+
 async function populateParkingLotsDropdown() {
     let cityId = $("#selectCityHome").val();
     let areaId = $("#selectAreaHome").val();
-    let initialElement = `<option value="" disabled selected hidden>Parking Lot</option>`;
-    $("#selectParkingLotHome").empty();
-    $("#selectParkingLotHome").append(initialElement);
+    resetParkingLotsDropdown();
     await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots`, function (data) {
         for (var i = 0; i < data.length; i++) {
             let element = `<option value="${data[i].id}">${data[i].name}</option>`;
@@ -50,6 +53,11 @@ async function populateParkingLotsDropdown() {
     })
 }
 
+function resetParkingLotsDropdown() {
+    let initialElement = `<option value="" disabled selected hidden>Parking Lot</option>`;
+    $("#selectParkingLotHome").empty();
+    $("#selectParkingLotHome").append(initialElement);
+}
 
 async function populateResultingParkingSapces() {
     $("#resultingParkingSpaces").empty();
