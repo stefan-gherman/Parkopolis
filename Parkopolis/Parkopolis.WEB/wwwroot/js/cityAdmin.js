@@ -9,7 +9,7 @@ $.getJSON('http://localhost:1028/api/cities', function (data) {
 function populateCities() {
     for (var i = 0; i < citiesList.length; i++) {
         $("#citiesContainer").append(
-            `<p>${citiesList[i].name}</p>  
+            `<p id="city${citiesList[i].id}">${citiesList[i].name}</p>  
             `
         );
     }

@@ -100,7 +100,27 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <form>
+                    <div class="form-group">
+                        <label for="registerDisplayUSername">Display Username</label>
+                        <input type="email" class="form-control" id="registerDisplayUsername" aria-describedby="registerDisplayUsernameHelp" placeholder="Enter Display Username">
+                        <small id="registerDisplayUSernameHelp" class="form-text text-muted">Please enter a username that can be displayed to other users.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerInputEmail">Email address</label>
+                        <input type="email" class="form-control" id="registerInputEmail" aria-describedby="registerEmailHelp" placeholder="Enter email">
+                        <small id="registerEmailHelp" class="form-text text-muted">Please enter a valid email address.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerInputPassword">Password</label>
+                        <input type="password" class="form-control" id="registerInputPassword" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerRetypeInputPassword">Retype Password</label>
+                        <input type="password" class="form-control" id="registerRetypeInputPassword" placeholder="Retype Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -121,7 +141,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <form>
+                    <div class="form-group">
+                        <label for="loginInputEmail">Email address</label>
+                        <input type="email" class="form-control" id="loginInputEmail" aria-describedby="loginEmailHelp" placeholder="Enter email">
+                        <small id="loginEmailHelp" class="form-text text-muted">Please enter your account's email address.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginInputPassword">Password</label>
+                        <input type="password" class="form-control" id="loginInputPassword" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
