@@ -25,11 +25,11 @@ namespace Parkopolis.WEB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            var connectionString = Configuration.GetConnectionString("ParkopolisContext");
+            var connectionString = Configuration.GetConnectionString("Development");
+            services.AddMvc(option => option.EnableEndpointRouting = false);
 
             services.AddDbContext<ParkopolisDbContext>(options => 
-            options.UseSqlServer(@"Server=(localdb)\\mssqllocaldb;Database=ParkopolisDB;Trusted_Connection=True;MultipleActiveResultSets=true"));
-            services.AddMvc(option => option.EnableEndpointRouting = false);
+            options.UseSqlServer(connectionString));
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ParkopolisDbContext>();
 
         }

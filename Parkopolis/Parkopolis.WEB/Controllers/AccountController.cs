@@ -31,8 +31,9 @@ namespace Parkopolis.WEB.Controllers
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { Email = model.Email, UserName = model.Email };
+               
                 var result=  await userManager.CreateAsync(user, model.Password);
-
+                
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
