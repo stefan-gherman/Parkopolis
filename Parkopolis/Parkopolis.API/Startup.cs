@@ -10,6 +10,10 @@ using Microsoft.Extensions.Hosting;
 using Parkopolis.API.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using Parkopolis.API.Context;
+using Microsoft.EntityFrameworkCore;
+using Parkopolis.API.Services;
+using AutoMapper;
 
 namespace Parkopolis.API
 {
@@ -27,7 +31,16 @@ namespace Parkopolis.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin", 
+                    builder =>
+                    {
+                        builder.WithOrigins("*").SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
@@ -35,6 +48,10 @@ namespace Parkopolis.API
             //    swaggerGen.SwaggerDoc("v1", new OpenApiInfo { Title = "a", Version="1"});
 
             //});
+            var connectionString = Configuration.GetConnectionString("ParkopolisContext");
+            services.AddDbContext<ParkopolisDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IParkopolisRepository, ParkopolisDbRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
         }
 
@@ -61,6 +78,7 @@ namespace Parkopolis.API
             app.UseSwaggerUI(option =>
             {
                 option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
+                option.RoutePrefix = string.Empty;
             });
 
 

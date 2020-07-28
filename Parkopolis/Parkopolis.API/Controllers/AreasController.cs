@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
+using Parkopolis.API.Models;
+using Parkopolis.API.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +14,24 @@ namespace Parkopolis.API.Controllers
     [Route("api/cities/{cityId}/areas")]
     public class AreasController : ControllerBase
     {
+        IMapper _mapper;
+        IParkopolisRepository _repo;
+
+        public AreasController (IMapper mapper, IParkopolisRepository repo)
+        {
+            _mapper = mapper;
+            _repo = repo;
+        }
+
         [HttpGet]
         public IActionResult GetAreas(int cityId)
         {
-            if (!Validation.CityExists(cityId)) return NotFound();
+            if(!_repo.CityExists(cityId))
+            {
+                return NotFound("City Not Found");
+            }
 
-            return Ok(AreasDataStore.CurrentAreas.Areas.FindAll( a => a.CityId == cityId));
+            return Ok(_mapper.Map<IEnumerable<AreaForDisplayDto>>(_repo.GetAllAreasForCity(cityId)));
         }
 
         [HttpGet("{areaId}")]

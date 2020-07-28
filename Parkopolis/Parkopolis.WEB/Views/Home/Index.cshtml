@@ -1,8 +1,86 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Parkopolis";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form>
+    <div class="form-group">
+        @*<label for="exampleFormControlSelect1">City</label>*@
+        <select class="form-control" id="exampleFormControlSelect1">
+            <option value="" disabled selected hidden>City</option>
+            <option value="Bucharest">Bucharest</option>
+            <option value="Cluj-Napoca">Cluj-Napoca</option>
+        </select>
+    </div>
+</form>
+
+<form>
+    <div class="form-group">
+        @*<label for="exampleFormControlSelect1">Area</label>*@
+        <select class="form-control" id="exampleFormControlSelect1">
+            <option value="" disabled selected hidden>Area</option>
+            <option>Union Square</option>
+            <option>University Square</option>
+            <option>Obor Square</option>
+        </select>
+    </div>
+</form>
+
+<form>
+    <div class="form-group">
+        @*<label for="exampleFormControlSelect1">Parking Lot</label>*@
+        <select class="form-control" id="exampleFormControlSelect1">
+            <option value="" disabled selected hidden>Parking Lot</option>
+            <option>Ionescu Parking</option>
+            <option>Popescu Parking</option>
+            <option>Flexible Spaces</option>
+        </select>
+    </div>
+</form>
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <p>IP 101</p>
+                <p>
+                    <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                </p>
+                <a href="#" class="btn btn-success">Take</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <p>IP 102</p>
+                <p>
+                    <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                </p>
+                <a href="#" class="btn btn-success">Take</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <p>IP 103</p>
+                <p>
+                    <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                </p>
+                <a href="#" class="btn btn-success">Take</a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <p>IP 105</p>
+                <p>
+                    <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                </p>
+                <a href="#" class="btn btn-success">Take</a>
+            </div>
+        </div>
+    </li>
+</ul>
+
