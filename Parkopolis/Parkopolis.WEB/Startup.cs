@@ -1,18 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Parkopolis.API.Context;
+using Parkopolis.API.Models;
 
 namespace Parkopolis.WEB
 {
     public class Startup
     {
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,6 +25,13 @@ namespace Parkopolis.WEB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            var connectionString = Configuration.GetConnectionString("ParkopolisContext");
+
+            services.AddDbContext<ParkopolisDbContext>(options => 
+            options.UseSqlServer(@"Server=(localdb)\\mssqllocaldb;Database=ParkopolisDB;Trusted_Connection=True;MultipleActiveResultSets=true"));
+            services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ParkopolisDbContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,8 +50,10 @@ namespace Parkopolis.WEB
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseMvc();
 
+            app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

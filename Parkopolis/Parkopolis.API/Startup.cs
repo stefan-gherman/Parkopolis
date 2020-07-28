@@ -54,7 +54,6 @@ namespace Parkopolis.API
             services.AddScoped<IParkopolisRepository, ParkopolisDbRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ParkopolisDbContext>();
 
         }
 

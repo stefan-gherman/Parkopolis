@@ -14,7 +14,7 @@ namespace Parkopolis.API.Context
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserViewModel> Users { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<ParkingLot> ParkingLots { get; set; }
@@ -22,7 +22,7 @@ namespace Parkopolis.API.Context
 
         protected override void OnModelCreating(ModelBuilder model)
         {
-            model.Entity<User>().ToTable("User");
+            model.Entity<UserViewModel>().ToTable("User");
             model.Entity<Area>().ToTable("Area");
             model.Entity<City>().ToTable("City");
             model.Entity<ParkingLot>().ToTable("ParkingLot");

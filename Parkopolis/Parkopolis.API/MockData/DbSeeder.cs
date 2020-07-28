@@ -18,21 +18,21 @@ namespace Parkopolis.API.MockData
                 return;
             }
 
-            var owners = new User[]
+            var owners = new UserViewModel[]
             {
-                new User{FirstName="Bartolomeu", LastName="Petrescu", 
+                new UserViewModel{FirstName="Bartolomeu", LastName="Petrescu", 
                     Password="k34", PhoneNumber="07345678", Email="bp@mail.com", UserName="bpetre44", Type=UserType.Owner},
-                new User{FirstName="Lucretiu", LastName="Popa",
+                new UserViewModel{FirstName="Lucretiu", LastName="Popa",
                     Password="k34", PhoneNumber="07345678", Email="lp@mail.com", UserName="lpopa42", Type=UserType.Owner},
-                new User{FirstName="Diocletian", LastName="Sandu",
+                new UserViewModel{FirstName="Diocletian", LastName="Sandu",
                     Password="k34", PhoneNumber="07345678", Email="ds@mail.com", UserName="dsandu44", Type=UserType.Owner},
-                new User{FirstName="Primaria", LastName="Sector 2",
+                new UserViewModel{FirstName="Primaria", LastName="Sector 2",
                     Password="k34", PhoneNumber="07345678", Email="primsect2@mail.com", UserName="ps2", Type=UserType.Owner},
-                new User{FirstName="SuperParking", LastName="Corp",
+                new UserViewModel{FirstName="SuperParking", LastName="Corp",
                     Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Owner},
-                new User{FirstName="Simple", LastName="User",
+                new UserViewModel{FirstName="Simple", LastName="User",
                     Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Customer},
-                new User{FirstName="Simple", LastName="Admin",
+                new UserViewModel{FirstName="Simple", LastName="Admin",
                     Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Admin}
             };
 
