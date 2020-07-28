@@ -11,6 +11,8 @@ namespace Parkopolis.API.MockData
     {
         public static void Init (ParkopolisDbContext context)
         {
+            context.Database.EnsureCreated();
+
             if (context.Cities.Any() && context.Areas.Any() && context.ParkingLots.Any())
             {
                 return;
@@ -27,7 +29,9 @@ namespace Parkopolis.API.MockData
                 new User{FirstName="Primaria", LastName="Sector 2",
                     Password="k34", PhoneNumber="07345678", Email="primsect2@mail.com", UserName="ps2", Type=UserType.Owner},
                 new User{FirstName="SuperParking", LastName="Corp",
-                    Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Owner}
+                    Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Owner},
+                new User{FirstName="Simple", LastName="User",
+                    Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Customer}
             };
 
             context.Users.AddRange(owners);
@@ -37,7 +41,7 @@ namespace Parkopolis.API.MockData
             var cities = new City[]
             {
                 new City{ Name = "Bucharest"},
-                new City { Name="Cluj-Napoca"},
+                new City {Name="Cluj-Napoca"},
                 new City { Name="Craiova"}
             };
 
@@ -50,7 +54,7 @@ namespace Parkopolis.API.MockData
                 new Area{Name="Piata Victoriei", CityId = 1},
                 new Area{Name="Piata Romana", CityId = 1},
                 new Area{Name="Gruia", CityId = 2},
-                new Area{Name="Piata Centrala", CityId = 3},
+                new Area{Name="Piata Centrala", CityId = 3}
             };
 
             context.Areas.AddRange(areas);
@@ -72,12 +76,12 @@ namespace Parkopolis.API.MockData
 
             var parkingSpace = new ParkingSpace[]
             {
-                new ParkingSpace{Name="a33", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=1 },
-                new ParkingSpace{Name="a31", IsCovered=false, IsTaken=false, HasCarWash=false, Details="Near exit", ParkingLotId=1 },
-                new ParkingSpace{Name="ty67", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=2 },
-                new ParkingSpace{Name="ty897", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=2 },
-                new ParkingSpace{Name="k89", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=3 },
-                new ParkingSpace{Name="p89", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=3 }
+                new ParkingSpace{Name="a33", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=1, Price=12.24M },
+                new ParkingSpace{Name="a31", IsCovered=false, IsTaken=false, HasCarWash=false, Details="Near exit", ParkingLotId=1,  Price=12.24M},
+                new ParkingSpace{Name="ty67", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=2,  Price=12.24M },
+                new ParkingSpace{Name="ty897", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=2, Price=12.24M },
+                new ParkingSpace{Name="k89", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=3,  Price=12.24M },
+                new ParkingSpace{Name="p89", IsCovered=true, IsTaken=false, HasCarWash=true, Details="Near exit", ParkingLotId=3,  Price=12.24M }
             };
 
             context.ParkingSpaces.AddRange(parkingSpace);
