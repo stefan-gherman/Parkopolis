@@ -50,7 +50,7 @@ namespace Parkopolis.API.Services
 
         public  IEnumerable<City> GetAllCities()
         {
-           return  _context.Cities.ToList();
+           return  _context.Cities.Include(c => c.Areas).ToList();
         }
 
         public void GetAreaById(int id)

@@ -26,8 +26,8 @@ namespace Parkopolis.API.Controllers
         [HttpGet]
         public IActionResult GetCities()
         {
-            
-            return Ok(_mapper.Map<IEnumerable<CityDto>>(_repository.GetAllCities()));
+            return Ok(_repository.GetAllCities());
+            //return Ok(_mapper.Map<IEnumerable<CityDto>>(_repository.GetAllCities()));
         }
 
         [HttpGet("{cityId}")]

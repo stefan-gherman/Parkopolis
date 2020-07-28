@@ -31,7 +31,9 @@ namespace Parkopolis.API.MockData
                 new User{FirstName="SuperParking", LastName="Corp",
                     Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Owner},
                 new User{FirstName="Simple", LastName="User",
-                    Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Customer}
+                    Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Customer},
+                new User{FirstName="Simple", LastName="Admin",
+                    Password="k34", PhoneNumber="07345678", Email="spcorp@mail.com", UserName="sp2", Type=UserType.Admin}
             };
 
             context.Users.AddRange(owners);
