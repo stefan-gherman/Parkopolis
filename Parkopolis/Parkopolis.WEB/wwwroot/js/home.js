@@ -2,11 +2,15 @@
 
 $("#selectCityHome").change(function () {
     populateAreasDropdown();
-    // clear parkinglots and spaces eventually
+    // clear parkinglots and spaces eventually?
 });
 
 $("#selectAreaHome").change(function () {
     populateParkingLotsDropdown();
+});
+
+$("#selectParkingLotHome").change(function () {
+    populateResultingParkingSapces();
 });
 
 async function populateCitiesDropdown() {
@@ -45,3 +49,29 @@ async function populateParkingLotsDropdown() {
         }
     })
 }
+
+
+async function populateResultingParkingSapces() {
+    $("#resultingParkingSpaces").empty();
+    let cityId = $("#selectCityHome").val();
+    let areaId = $("#selectAreaHome").val();
+    let parkingLotId = $("#selectParkingLotHome").val();
+    await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces`, function (data) {
+        for (var i = 0; i < data.length; i++) {
+            let element = `
+                        <li class="list-group-item">
+                            <div class="container">
+                                <div class="d-flex justify-content-between">
+                                    <p>${data[i].name}</p>
+                                    <p>
+                                        <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                                    </p>
+                                    <a href="#" class="btn btn-success">Take</a>
+                                </div>
+                            </div>
+                        </li> `;
+            $("#resultingParkingSpaces").append(element);
+        }
+    })
+}
+
