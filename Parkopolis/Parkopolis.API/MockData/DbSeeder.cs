@@ -51,10 +51,10 @@ namespace Parkopolis.API.MockData
 
             var areas = new Area[]
             {
-                new Area{Name="Piata Victoriei", CityId = 1},
-                new Area{Name="Piata Romana", CityId = 1},
+                new Area{Name="Piata Victoriei", CityId = 3},
+                new Area{Name="Piata Romana", CityId = 3},
                 new Area{Name="Gruia", CityId = 2},
-                new Area{Name="Piata Centrala", CityId = 3}
+                new Area{Name="Piata Centrala", CityId = 1}
             };
 
             context.Areas.AddRange(areas);
