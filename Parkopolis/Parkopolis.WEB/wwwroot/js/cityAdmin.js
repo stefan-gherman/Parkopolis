@@ -58,7 +58,7 @@ $("#newAreaSubmit").click(async function () {
 });
 
 async function getCitiesFromDb() {
-    await $.getJSON('http://localhost:1028/api/cities', function (data) {
+    await $.getJSON(`http://localhost:1028/api/cities`, function (data) {
         for (var i = 0; i < data.length; i++) {
             allCities.push(data[i]);
         }   

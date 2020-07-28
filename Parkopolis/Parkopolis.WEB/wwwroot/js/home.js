@@ -66,6 +66,16 @@ async function populateResultingParkingSapces() {
     let parkingLotId = $("#selectParkingLotHome").val();
     await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces`, function (data) {
         for (var i = 0; i < data.length; i++) {
+            let status = "Take";
+            let buttonClass = "btn btn-success"
+            if (data[i].isTaken == false) {
+                status = "Take";
+                buttonClass = "btn btn-success"
+            }
+            else {
+                status = "Taken";
+                buttonClass = "btn btn-danger"
+            }
             let element = `
                         <li class="list-group-item">
                             <div class="container">
@@ -74,12 +84,79 @@ async function populateResultingParkingSapces() {
                                     <p>
                                         <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
                                     </p>
-                                    <a href="#" class="btn btn-success">Take</a>
+                                    <button id="parkingSpace${data[i].id}" class="${buttonClass}">${status}</button>
                                 </div>
                             </div>
                         </li> `;
-            $("#resultingParkingSpaces").append(element);
-        }
-    })
+            $("#resultingParkingSpaces").append(element);    
+        } 
+    });
+    $("[class*=btn][class*=btn-success]").click(function () {
+        let parkingSpaceId = this.id.replace("parkingSpace", "");
+        handleTakeParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId)
+    });
+    
 }
 
+async function handleTakeParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId) {
+    // first get the parking space for data
+    let URL = `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces/${parkingSpaceId}`;
+    await $.getJSON(URL, async function (data) {
+        //data.isTaken = true;
+        data = {
+            "id": parkingSpaceId,
+            "parkingLotId": 3,
+            "name": "ty897",
+            "isTaken": true,
+            "hasCarWash": true,
+            "isCovered": true,
+            "price": 12.24,
+            "details": "Near exit"
+        }
+        await $.ajax({
+            type: "PUT",
+            url: URL,
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function () {
+                console.log("Spot taken successfully.");
+            },
+            error: function (jqXHR, status) {
+                // error handler
+                console.log(jqXHR);
+                alert('fail' + status.code);
+            }
+        })
+    });
+
+
+
+    //console.log("reached handle function too");
+    //async function () {
+    //    console.log($("#cityName").val());
+    //    let newCityName = $("#cityName").val();
+    //    //alert(name);
+    //    let data = { "name": newCityName };
+    //    //data[name] = newCityName;
+    //    console.log(data);
+
+    //    await $.ajax({
+    //        type: "POST",
+    //        url: "http://localhost:1028/api/cities",
+    //        data: JSON.stringify(data),
+    //        contentType: "application/json; charset=utf-8",
+    //        crossDomain: true,
+    //        dataType: "json",
+    //        success: function () {
+    //            console.log("City added successfully.");
+    //        },
+    //        error: function (jqXHR, status) {
+    //            // error handler
+    //            console.log(jqXHR);
+    //            alert('fail' + status.code);
+    //        }
+    //    })
+    //    getCitiesFromDb();
+}

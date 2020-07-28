@@ -60,6 +60,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPut("{parkingSpaceId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult UpdateParkingSpace(int areaId, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
         {
             var getParkingSpaceForUpdate = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.FirstOrDefault(p => p.Id == parkingSpaceId);
@@ -72,6 +73,19 @@ namespace Parkopolis.API.Controllers
             getParkingSpaceForUpdate.ParkingLotId = parkingSpace.ParkingLotId;
             getParkingSpaceForUpdate.Price = parkingSpace.Price;
 
+            //var temp = new ParkingSpace()
+            //{
+            //    Id = parkingSpaceId,
+            //    Name = parkingSpace.Name,
+            //    Details = parkingSpace.Details,
+            //    HasCarWash = parkingSpace.HasCarWash,
+            //    IsCovered = parkingSpace.IsCovered,
+            //    IsTaken = parkingSpace.IsTaken,
+            //    ParkingLotId = parkingSpace.ParkingLotId,
+            //    Price = parkingSpace.Price
+            //};
+
+            //_repo.UpdateParkingSpace(parkingSpaceId, temp);
             return NoContent();
         }
 
