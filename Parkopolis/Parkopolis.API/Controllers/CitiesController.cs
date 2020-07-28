@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
 using Parkopolis.API.Models;
+using AutoMapper;
 using Parkopolis.API.Services;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +58,22 @@ namespace Parkopolis.API.Controllers
 
             var city = _repository.GetCityById(cityId);
             _repository.RemoveCity(city);
+            return NoContent();
+        }
+
+        [HttpPost]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult CreateCity([FromBody] CityDto city)
+        {
+            var maxCitytId = CitiesDataStore.CurrentCities.Cities.Max(c => c.Id);
+
+            var newCity = new CityDto()
+            {
+                Id = maxCitytId + 1,
+                Name = city.Name
+            };
+            CitiesDataStore.CurrentCities.Cities.Add(newCity);
+
             return NoContent();
         }
     }

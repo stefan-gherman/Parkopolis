@@ -31,7 +31,16 @@ namespace Parkopolis.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin", 
+                    builder =>
+                    {
+                        builder.WithOrigins("*").SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddMvc(option => option.EnableEndpointRouting = false);
 

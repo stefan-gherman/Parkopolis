@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
 using Parkopolis.API.Models;
@@ -23,6 +24,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPost]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult CreateParkingSpace(int areaId, int parkingLotId, [FromBody] ParkingSpaceForCreationDto parkingSpace)
         {
             var maxParkingSpaceId = ParkingSpacesDataStore.CurrentParkingSpaces.ParkingSpaces.Max(p => p.Id);
