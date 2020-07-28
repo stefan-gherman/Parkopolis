@@ -40,7 +40,8 @@ namespace Parkopolis.API.Controllers
             return Ok(_mapper.Map<CityDto>(_repository.GetCityById(cityId)));
         }
 
-        [HttpPost] 
+        [HttpPost]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult AddCity([FromBody] City cityToAdd)
         {
             _repository.AddCity(cityToAdd);
@@ -61,20 +62,20 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        [EnableCors("AllowAnyOrigin")]
-        public IActionResult CreateCity([FromBody] CityDto city)
-        {
-            var maxCitytId = CitiesDataStore.CurrentCities.Cities.Max(c => c.Id);
+        //[HttpPost]
+        
+        //public IActionResult CreateCity([FromBody] CityDto city)
+        //{
+        //    var maxCitytId = CitiesDataStore.CurrentCities.Cities.Max(c => c.Id);
 
-            var newCity = new CityDto()
-            {
-                Id = maxCitytId + 1,
-                Name = city.Name
-            };
-            CitiesDataStore.CurrentCities.Cities.Add(newCity);
+        //    var newCity = new CityDto()
+        //    {
+        //        Id = maxCitytId + 1,
+        //        Name = city.Name
+        //    };
+        //    CitiesDataStore.CurrentCities.Cities.Add(newCity);
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
     }
 }
