@@ -8,8 +8,12 @@ namespace Parkopolis.WEB.Models
         [EmailAddress]
         public string Email { get; set; }
 
+        [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
+        [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         public string PhoneNumber { get; set; }
@@ -19,7 +23,8 @@ namespace Parkopolis.WEB.Models
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Required]
+        [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
