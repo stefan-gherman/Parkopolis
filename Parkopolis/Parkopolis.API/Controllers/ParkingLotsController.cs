@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
@@ -54,6 +55,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPost]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult CreateParkingLot(int cityId, int areaId, [FromBody] ParkingLot parkingLot)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");

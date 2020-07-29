@@ -64,6 +64,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPut("{parkingSpaceId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult UpdateParkingSpace(int cityId, int areaId, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpace parkingSpace)
         {
 
@@ -80,7 +81,7 @@ namespace Parkopolis.API.Controllers
             parkingSpace.Id = parkingSpaceId;
 
             _repo.UpdateParkingSpace(parkingSpaceId, parkingSpace);
-
+            
             return NoContent();
         }
 
