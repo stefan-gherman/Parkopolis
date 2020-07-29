@@ -50,7 +50,7 @@ namespace Parkopolis.API.Services
         //Additional Queries
 
         public IEnumerable<ParkingLot> GetAllParkingLotsIncludingParkingSpaces();
-        public IEnumerable<ParkingLot> GetParkingLotsIncludingId(int areaId);
+        public IEnumerable<ParkingLot> GetParkingLotsIncludingParkingSpacesById(int areaId);
         public ParkingLot GetParkingLotByIdIncludingParkingSpaces(int id);
     }
 }
