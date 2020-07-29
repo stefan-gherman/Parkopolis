@@ -32,7 +32,7 @@ namespace Parkopolis.WEB.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { Email = model.Email, UserName = model.Email, FirstName = model.FirstName
-                , LastName = model.LastName};
+                , LastName = model.LastName, Type = model.UserType};
                
                 var result=  await userManager.CreateAsync(user, model.Password);
                 
