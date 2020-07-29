@@ -74,36 +74,14 @@ namespace Parkopolis.WEB.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public async void Put(string id, [FromBody] TempUser tempUserFromRequest)
+        public void Put(string id, [FromBody] TempUser tempUserFromRequest)
         {
-            var user = await userManager.FindByIdAsync(id);
-
+            
+            var user = userManager.FindByIdAsync(id).Result;
+            
             user.Type = (UserType)tempUserFromRequest.Rank;
 
-            //string userId = tempUserFromRequest.Id;
-
-            //DbUser tempDbUser = new DbUser();
-            //var allUsersFromDb = userManager.Users;
-            //var tempuserFromDb = allUsersFromDb.FirstOrDefault(u => u.Id == userId);
-
-            //tempuserFromDb.Type = (UserType)tempUserFromRequest.Rank;
-            await userManager.UpdateAsync(user);
-        }
-
-        [HttpPatch]
-        public IActionResult PartiallyUpdateUser([FromBody] JsonPatchDocument<TempUser> patchDoc)
-        {
-            TempUser tempUserFromPatch = new TempUser();
-            patchDoc.ApplyTo(tempUserFromPatch);
-            string userId = tempUserFromPatch.Id;
-
-            DbUser tempDbUser = new DbUser();
-            var allUsersFromDb = userManager.Users;
-            var tempuserFromDb = allUsersFromDb.FirstOrDefault(u => u.Id == userId);
-
-            tempuserFromDb.Type = (UserType)tempUserFromPatch.Rank;
-            userManager.UpdateAsync(tempuserFromDb);
-            return NoContent();
+            userManager.UpdateAsync(user);
         }
 
             // DELETE api/<UsersController>/5
