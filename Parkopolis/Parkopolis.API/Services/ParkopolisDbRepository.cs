@@ -1,20 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Parkopolis.API.Context;
 using Parkopolis.API.Models;
+using Parkopolis.API.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Parkopolis.API.Services
 {
     public class ParkopolisDbRepository : IParkopolisRepository
     {
         private readonly ParkopolisDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ParkopolisDbRepository(ParkopolisDbContext context)
+       
+        public ParkopolisDbRepository(ParkopolisDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public void AddArea(Area area)
@@ -120,8 +124,8 @@ namespace Parkopolis.API.Services
         {
             var updateParkingLot = _context.ParkingLots.SingleOrDefault(pl => pl.Id == id);
 
-            updateParkingLot.Location = parkingLot.Location;
-            _context.Update(updateParkingLot);
+            CopyClass.CopyParkingLot(parkingLot, updateParkingLot);
+            _context.ParkingLots.Update(updateParkingLot);
             Save();
         }
 
@@ -165,12 +169,31 @@ namespace Parkopolis.API.Services
 
         public void UpdateParkingSpace(int id, ParkingSpace parkingSpace)
         {
-            throw new NotImplementedException();
+            var updateParkingSpace = _context.ParkingSpaces.SingleOrDefault(pl => pl.Id == id);
+
+            CopyClass.CopyParkingSpace(parkingSpace, updateParkingSpace);
+            _context.ParkingSpaces.Update(updateParkingSpace);
+            Save();
         }
 
         public void PatchParkingSpace(int id, ParkingSpace parkingSpace)
         {
-            throw new NotImplementedException();
+            UpdateParkingSpace(id, parkingSpace);
+        }
+
+        public IEnumerable<ParkingLot> GetAllParkingLotsIncludingParkingSpaces()
+        {
+            return _context.ParkingLots.Include(pl=> pl.ParkingSpaces).ToList();
+        }
+
+        public ParkingLot GetParkingLotByIdIncludingParkingSpaces(int id)
+        {
+            return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<ParkingLot> GetParkingLotsIncludingParkingSpacesById(int areaId)
+        {
+            return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.AreaId == areaId).ToList();
         }
     }
 }
