@@ -62,17 +62,17 @@ namespace Parkopolis.API.MockData
             context.Areas.AddRange(areas);
             context.SaveChanges();
 
-            var parkingLots = new ParkingLot[]
-            {
-                new ParkingLot{ Name="Central Parking Victoriei", HasSecurity=true, IsPaid=true, 
-                    IsStateOwned=false, Location="Near Kiselev Park", TotalParkingSpaces=27, AreaId=1, UserId=1},
-                 new ParkingLot{ Name="Victoriei MegaParking", HasSecurity=true, IsPaid=true,
-                    IsStateOwned=false, Location="In front of the government building", TotalParkingSpaces=21, AreaId=1, UserId=2},
-                  new ParkingLot{ Name="Gruia Parking", HasSecurity=false, IsPaid=true,
-                    IsStateOwned=false, Location="Near CFR Cluj Stadium", TotalParkingSpaces=50, AreaId=2, UserId=3}
-            };
+            //var parkingLots = new ParkingLot[]
+            //{
+            //    new ParkingLot{ Name="Central Parking Victoriei", HasSecurity=true, IsPaid=true, 
+            //        IsStateOwned=false, Location="Near Kiselev Park", TotalParkingSpaces=27, AreaId=1, UserId=1},
+            //     new ParkingLot{ Name="Victoriei MegaParking", HasSecurity=true, IsPaid=true,
+            //        IsStateOwned=false, Location="In front of the government building", TotalParkingSpaces=21, AreaId=1, UserId=2},
+            //      new ParkingLot{ Name="Gruia Parking", HasSecurity=false, IsPaid=true,
+            //        IsStateOwned=false, Location="Near CFR Cluj Stadium", TotalParkingSpaces=50, AreaId=2, UserId=3}
+            //};
 
-            context.ParkingLots.AddRange(parkingLots);
+            //context.ParkingLots.AddRange(parkingLots);
             context.SaveChanges();
 
 

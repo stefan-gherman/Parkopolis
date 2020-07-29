@@ -17,7 +17,7 @@ namespace Parkopolis.API.Utils
             destination.TotalParkingSpaces = source.TotalParkingSpaces;
             destination.IsStateOwned = source.IsStateOwned;
             destination.Name = source.Name;
-            destination.UserId = source.UserId;
+            destination.ApplicationUserId = source.ApplicationUserId;
         }
 
         public static void CopyParkingSpace(ParkingSpace source, ParkingSpace destination)
