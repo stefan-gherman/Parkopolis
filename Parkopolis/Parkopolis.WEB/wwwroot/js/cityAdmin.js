@@ -1,4 +1,5 @@
-﻿// USER PROMOTION AND DEMOTION
+﻿let allCities = []
+getCitiesFromDb();// USER PROMOTION AND DEMOTION
 populateUserDopdown();
 
 
@@ -32,8 +33,7 @@ async function populateUserDopdown() {
 
 
 // CITY, AREA, PARKING LOT MANAGEMENT
-let allCities = []
-getCitiesFromDb();
+
 
 // Submitting a new city
 $("#newCitySubmit").click(async function () {
@@ -62,6 +62,10 @@ $("#newCitySubmit").click(async function () {
     })
     getCitiesFromDb();
 });
+
+
+
+// Deleting a City
 
 // Submitting a new Area in a City
 $("#newAreaSubmit").click(async function () {
@@ -167,13 +171,71 @@ async function getCitiesFromDb() {
     allCities = [];
 }
 
-function populateCities() {
+async function populateCities() {
     for (var i = 0; i < allCities.length; i++) {
         $("#citiesContainer").append(
-            `<p id="city${allCities[i].id}">${allCities[i].name}</p>`
-        );
+            `<div id="city${allCities[i].id}"><h2>${allCities[i].name}
+                    <span><button id="editCity${allCities[i].id}" class="btn btn-warning">Edit</button></span>
+                    <span><button id="deleteCity${allCities[i].id}"class="btn btn-danger">Delete</button></span></h2>
+            </div>`
+        );    
     }
+    $("[class*=btn][class*=btn-warning]").click(function () {
+        let cityId = this.id.replace("editCity", "");
+        handleEditCity(cityId);
+    });
 }
+
+// Editing a City
+async function handleEditCity(cityId) {
+    let cityName = "";
+    await $.getJSON(`http://localhost:1028/api/cities/${cityId}`, async function (data) {
+        cityName = data.name;
+    });
+    let formElement = `
+                        <hr />                                     
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="editCityName" value="${cityName}">
+                        </div>
+                        <button id="editCitySubmit${cityId}" class="btn btn-primary">Confirm Edit</button>
+                        `
+    $("#editCityFormContainer").append(formElement);
+    $(`#editCitySubmit${cityId}`).click(async function () {
+        let newCityName = $("#editCityName").val();
+        await confirmCityEdit(cityId, newCityName);
+        await $.getJSON(`http://localhost:1028/api/cities`, async function (data) {
+            for (var i = 0; i < data.length; i++) {
+                allCities.push(data[i]);
+            }
+            $("#citiesContainer").empty();
+            populateCities();
+            allCities = [];
+        });
+    })
+};
+
+async function confirmCityEdit(cityId, newCityName) {
+    let data = {
+        "id": cityId,
+        "name": newCityName
+    }
+    await $.ajax({
+        url: `http://localhost:1028/api/cities/${cityId}`, 
+        type: "PUT",        
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        success: function () {
+            console.log("edit successful");
+        },
+        error: function (jqXHR, status) {
+            console.log(jqXHR);
+            alert('fail' + status.code);
+        }
+    })
+    $("#editCityFormContainer").empty();    
+};
 
 function populateCitiesSelectAddArea() {
     for (var i = 0; i < allCities.length; i++) {
