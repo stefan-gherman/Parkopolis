@@ -30,5 +30,16 @@ namespace Parkopolis.API.Utils
             destination.ParkingLotId = source.ParkingLotId;
             destination.Price = source.Price;
         }
+
+        public static void CopyCity(City source, City destination)
+        {
+            destination.Name = source.Name;
+        }
+
+        public static void CopyArea(Area source, Area destination)
+        {
+            destination.Name = source.Name;
+            destination.CityId = source.CityId;
+        }
     }
 }
