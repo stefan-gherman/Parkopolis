@@ -53,7 +53,10 @@ namespace Parkopolis.API.Controllers
             if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
 
             //parkingLot.AreaId = areaId;
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _repo.AddParkingLot(parkingLot);
             return NoContent();
         }
@@ -109,6 +112,8 @@ namespace Parkopolis.API.Controllers
             parkingLotFromStore.IsStateOwned = parkingLotToPatch.IsStateOwned;
             parkingLotFromStore.Location = parkingLotToPatch.Location;
             parkingLotFromStore.TotalParkingSpaces = parkingLotToPatch.TotalParkingSpaces;
+
+            _repo.PatchParkingLot(parkingLotId, parkingLotFromStore);
 
             return NoContent();
         }
