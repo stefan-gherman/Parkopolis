@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Parkopolis.API.Controllers
 {
@@ -44,6 +45,10 @@ namespace Parkopolis.API.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult AddCity([FromBody] City cityToAdd)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
             _repository.AddCity(cityToAdd);
             _repository.Save();
             return NoContent();
@@ -62,20 +67,22 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
 
-        //[HttpPost]
+        [HttpPut("{cityId}")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult UpdateCity(int cityId, [FromBody] City city )
+        {
+            if (!_repository.CityExists(cityId)) return NotFound("City not found");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
+
+            _repository.UpdateCity(cityId, city);
+
+
+            return NoContent();
+        }
+
         
-        //public IActionResult CreateCity([FromBody] CityDto city)
-        //{
-        //    var maxCitytId = CitiesDataStore.CurrentCities.Cities.Max(c => c.Id);
-
-        //    var newCity = new CityDto()
-        //    {
-        //        Id = maxCitytId + 1,
-        //        Name = city.Name
-        //    };
-        //    CitiesDataStore.CurrentCities.Cities.Add(newCity);
-
-        //    return NoContent();
-        //}
     }
 }

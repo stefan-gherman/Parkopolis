@@ -195,5 +195,22 @@ namespace Parkopolis.API.Services
         {
             return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.AreaId == areaId).ToList();
         }
+
+        public void UpdateCity(int id, City city)
+        {
+            var cityUpdate = _context.Cities.SingleOrDefault(c => c.Id == id);
+
+            CopyClass.CopyCity(city, cityUpdate);
+            _context.Cities.Update(cityUpdate);
+            Save();
+        }
+
+        public void UpdateArea(int id, Area area)
+        {
+            var areaUpdate = _context.Areas.SingleOrDefault(a => a.Id == id);
+            CopyClass.CopyArea(area, areaUpdate);
+            _context.Areas.Update(areaUpdate);
+            Save();
+        }
     }
 }

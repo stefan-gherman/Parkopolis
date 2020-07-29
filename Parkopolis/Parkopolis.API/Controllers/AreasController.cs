@@ -51,11 +51,15 @@ namespace Parkopolis.API.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult AddArea([FromBody] Area area, int cityId)
         {
-            //if (!_repo.CityExists(area.CityId))
-            //{
-            //    return NotFound("City in request body does not exist");
-            //}
+            if (!_repo.CityExists(area.CityId))
+            {
+                return NotFound("City in request body does not exist");
+            }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
             area.CityId = cityId;
 
             _repo.AddArea(area);
@@ -75,6 +79,28 @@ namespace Parkopolis.API.Controllers
             }
 
             _repo.RemoveArea(_repo.GetAreaById(areaId));
+            return NoContent();
+        }
+        [HttpPut("{areaId}")]
+        [EnableCors]
+        public IActionResult UpdateArea (int cityId, int areaId, Area area)
+        {
+            if (!_repo.CityExists(cityId))
+            {
+                return NotFound("No city");
+            }
+            if (!_repo.AreaExists(areaId))
+            {
+                return NotFound("Area not found");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
+            area.CityId = cityId;
+
+            _repo.UpdateArea(areaId, area);
             return NoContent();
         }
 
