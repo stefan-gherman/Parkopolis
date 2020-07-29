@@ -45,6 +45,10 @@ namespace Parkopolis.API.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult AddCity([FromBody] City cityToAdd)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
             _repository.AddCity(cityToAdd);
             _repository.Save();
             return NoContent();

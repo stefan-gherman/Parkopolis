@@ -83,6 +83,10 @@ namespace Parkopolis.API.Controllers
             if (!_repo.AreaExists(parkingLot.AreaId)) return NotFound("AreaId From Query is Invalid");
 
             parkingLot.Id = parkingLotId;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
             _repo.UpdateParkingLot(parkingLotId, parkingLot);
 
             return NoContent();
@@ -123,6 +127,10 @@ namespace Parkopolis.API.Controllers
             parkingLotFromStore.Location = parkingLotToPatch.Location;
             parkingLotFromStore.TotalParkingSpaces = parkingLotToPatch.TotalParkingSpaces;
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
             _repo.PatchParkingLot(parkingLotId, parkingLotFromStore);
 
             return NoContent();
@@ -137,6 +145,10 @@ namespace Parkopolis.API.Controllers
 
             if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
             _repo.RemoveParkingLot(_repo.GetParkingLotById(parkingLotId));
 
             return NoContent();

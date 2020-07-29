@@ -51,11 +51,15 @@ namespace Parkopolis.API.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult AddArea([FromBody] Area area, int cityId)
         {
-            //if (!_repo.CityExists(area.CityId))
-            //{
-            //    return NotFound("City in request body does not exist");
-            //}
+            if (!_repo.CityExists(area.CityId))
+            {
+                return NotFound("City in request body does not exist");
+            }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
             area.CityId = cityId;
 
             _repo.AddArea(area);
@@ -88,6 +92,11 @@ namespace Parkopolis.API.Controllers
             if (!_repo.AreaExists(areaId))
             {
                 return NotFound("Area not found");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
             }
             area.CityId = cityId;
 
