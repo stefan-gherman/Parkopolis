@@ -10,6 +10,7 @@
 </div>
 <hr />
 
+@*Add City*@
 <form>
     <div class="form-group">
         <input type="text" class="form-control" id="cityName" placeholder="Enter the City name here.">
@@ -17,6 +18,8 @@
     <button id="newCitySubmit" type="submit" class="btn btn-primary">Add City</button>
 </form>
 <hr />
+
+@*Add Area*@
 <form>
     <div class="form-group">
         <select class="form-control" id="selectCityAddArea">
@@ -29,6 +32,8 @@
     <button id="newAreaSubmit" type="submit" class="btn btn-primary">Add Area</button>
 </form>
 <hr />
+
+@*Add PArking Lot*@
 <form>
     <div class="form-group">
         <select class="form-control" id="selectCityAddParkingLot">
@@ -36,10 +41,12 @@
         </select>
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" id="areaName" placeholder="Enter the Area name here.">
+        <select class="form-control" id="selectAreaAddParkingLot">
+            <option value="" disabled selected hidden>Area</option>
+        </select>
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" id="parkingLotName" placeholder="Enter the Parking Lot name here.">
+        <input type="text" class="form-control" id="parkingLotNameAddParkingLot" placeholder="Enter the Parking Lot name here.">
     </div>
     <button id="newParkingLotSubmit" type="submit" class="btn btn-primary">Add Parking Lot</button>
 </form>

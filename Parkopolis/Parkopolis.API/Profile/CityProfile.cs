@@ -11,6 +11,7 @@ namespace Parkopolis.API.Profile
         public CityProfile()
         {
             CreateMap<Models.City, Models.CityDto>();
+            CreateMap<Models.City, Models.City>();
         }
     }
 }

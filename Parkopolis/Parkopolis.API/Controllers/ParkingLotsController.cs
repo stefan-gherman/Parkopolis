@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
 using Parkopolis.API.Models;
+using Parkopolis.API.Services;
 using System.Linq;
 
 namespace Parkopolis.API.Controllers
@@ -10,68 +13,92 @@ namespace Parkopolis.API.Controllers
     [Route("api/cities/{cityId}/areas/{areaId}/parkinglots")]
     public class ParkingLotsController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetParkingLots(int cityId, int areaId)
+        IMapper _mapper;
+        IParkopolisRepository _repo;
+
+        public ParkingLotsController(IMapper mapper, IParkopolisRepository repo)
         {
-            if (!Validation.CityExists(cityId) || !Validation.AreaExists(cityId, areaId)) return NotFound();
+            _mapper = mapper;
+            _repo = repo;
+        }
+        [HttpGet]
+        public IActionResult GetParkingLots(int cityId, int areaId, bool includeParkingSpots)
+        {
+            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!Validation.ParkingLotExists(areaId)) return NotFound();
+            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
 
-            return Ok(ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FindAll(p => p.AreaId == areaId));
+           if(includeParkingSpots)
+            {
+                return Ok(_repo.GetParkingLotsIncludingParkingSpacesById(areaId));
+            }
+
+            return Ok(_repo.GetParkingLots(areaId));
         }
 
         [HttpGet("{parkingLotId}")]
-        public IActionResult GetParkingLot(int cityId, int areaId, int parkingLotId)
+        public IActionResult GetParkingLot(int cityId, int areaId, int parkingLotId, bool includeParkingSpots)
         {
-            if (!Validation.CityExists(cityId) || !Validation.AreaExists(cityId, areaId) || !Validation.SingleParkingLotExists(parkingLotId)) return NotFound();
+            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!Validation.ParkingLotExists(areaId)) return NotFound();
+            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
 
-            return Ok(ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId));
+            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
+
+
+            if (includeParkingSpots)
+            {
+                return Ok(_repo.GetParkingLotByIdIncludingParkingSpaces(parkingLotId));
+            }
+
+            return Ok(_repo.GetParkingLotById(parkingLotId));
         }
 
         [HttpPost]
-        public IActionResult CreateParkingLot(int areaId, [FromBody] ParkingLotForCreationDto parkingLot)
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult CreateParkingLot(int cityId, int areaId, [FromBody] ParkingLot parkingLot)
         {
-            var maxParkingLotId = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.Max(p => p.Id);
+            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            var newParkingLot = new ParkingLotDto()
+            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
+
+            //parkingLot.AreaId = areaId;
+            if (!ModelState.IsValid)
             {
-                Id = maxParkingLotId + 1,
-                Name = parkingLot.Name,
-                AreaId = parkingLot.AreaId,
-                HasSecurity = parkingLot.HasSecurity,
-                IsPaid = parkingLot.IsPaid,
-                IsStateOwned = parkingLot.IsStateOwned,
-                Location = parkingLot.Location,
-                TotalParkingSpaces = parkingLot.TotalParkingSpaces
-            };
-
-            ParkingLotsDataStore.CurrentParkingLots.ParkingLots.Add(newParkingLot);
-
+                return BadRequest();
+            }
+            _repo.AddParkingLot(parkingLot);
             return NoContent();
         }
 
         [HttpPut("{parkingLotId}")]
-        public IActionResult UpdateParkingLot(int areaId, int parkingLotId, [FromBody] ParkingLotForCreationDto parkingLot)
+        public IActionResult UpdateParkingLot(int cityId, int areaId, int parkingLotId, [FromBody] ParkingLot parkingLot)
         {
-            var getParkingLotForUpdate = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId);
+            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            getParkingLotForUpdate.Name = parkingLot.Name;
-            getParkingLotForUpdate.AreaId = parkingLot.AreaId;
-            getParkingLotForUpdate.HasSecurity = parkingLot.HasSecurity;
-            getParkingLotForUpdate.IsPaid = parkingLot.IsPaid;
-            getParkingLotForUpdate.IsStateOwned = parkingLot.IsStateOwned;
-            getParkingLotForUpdate.Location = parkingLot.Location;
-            getParkingLotForUpdate.TotalParkingSpaces = parkingLot.TotalParkingSpaces;
+            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
+
+            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
+
+            if (!_repo.AreaExists(parkingLot.AreaId)) return NotFound("AreaId From Query is Invalid");
+
+            parkingLot.Id = parkingLotId;
+            _repo.UpdateParkingLot(parkingLotId, parkingLot);
 
             return NoContent();
         }
 
         [HttpPatch("{parkingLotId}")]
-        public IActionResult PartiallyUpdateParkingLot(int areaId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
+        public IActionResult PartiallyUpdateParkingLot(int cityId, int areaId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
         {
-            var parkingLotFromStore = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId);
+            if (!_repo.CityExists(cityId)) return NotFound("City not found");
+
+            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
+
+            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
+
+            
+            var parkingLotFromStore = _repo.GetParkingLotById(parkingLotId);
 
             var parkingLotToPatch = new ParkingLotForUpdateDto()
             {
@@ -84,6 +111,8 @@ namespace Parkopolis.API.Controllers
                 TotalParkingSpaces = parkingLotFromStore.TotalParkingSpaces
             };
 
+            if (!_repo.AreaExists(parkingLotToPatch.AreaId)) return NotFound("AreaId From Query is Invalid");
+
             patchDoc.ApplyTo(parkingLotToPatch);
 
             parkingLotFromStore.Name = parkingLotToPatch.Name;
@@ -94,15 +123,21 @@ namespace Parkopolis.API.Controllers
             parkingLotFromStore.Location = parkingLotToPatch.Location;
             parkingLotFromStore.TotalParkingSpaces = parkingLotToPatch.TotalParkingSpaces;
 
+            _repo.PatchParkingLot(parkingLotId, parkingLotFromStore);
+
             return NoContent();
         }
 
         [HttpDelete("{parkingLotId}")]
-        public IActionResult DeleteParkingLot(int areaId, int parkingLotId)
+        public IActionResult DeleteParkingLot(int cityId, int areaId, int parkingLotId)
         {
-            var parkingLotToDelete = ParkingLotsDataStore.CurrentParkingLots.ParkingLots.FirstOrDefault(p => p.Id == parkingLotId);
+            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            ParkingLotsDataStore.CurrentParkingLots.ParkingLots.Remove(parkingLotToDelete);
+            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
+
+            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
+
+            _repo.RemoveParkingLot(_repo.GetParkingLotById(parkingLotId));
 
             return NoContent();
         }

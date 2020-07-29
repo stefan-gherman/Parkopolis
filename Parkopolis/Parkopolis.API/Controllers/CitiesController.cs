@@ -63,7 +63,7 @@ namespace Parkopolis.API.Controllers
         }
 
         //[HttpPost]
-        //[EnableCors("AllowAnyOrigin")]
+        
         //public IActionResult CreateCity([FromBody] CityDto city)
         //{
         //    var maxCitytId = CitiesDataStore.CurrentCities.Cities.Max(c => c.Id);
