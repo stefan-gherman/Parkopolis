@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Parkopolis.API.Context;
 using Parkopolis.API.Models;
 using Parkopolis.API.Utils;
@@ -180,5 +181,19 @@ namespace Parkopolis.API.Services
             UpdateParkingSpace(id, parkingSpace);
         }
 
+        public IEnumerable<ParkingLot> GetAllParkingLotsIncludingParkingSpaces()
+        {
+            return _context.ParkingLots.Include(pl=> pl.ParkingSpaces).ToList();
+        }
+
+        public ParkingLot GetParkingLotByIdIncludingParkingSpaces(int id)
+        {
+            return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<ParkingLot> GetParkingLotsIncludingId(int areaId)
+        {
+            return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.AreaId == areaId).ToList();
+        }
     }
 }
