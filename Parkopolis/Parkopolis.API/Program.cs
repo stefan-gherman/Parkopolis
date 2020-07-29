@@ -32,7 +32,9 @@ namespace Parkopolis.API
                 try
                 {
                     var context = services.GetRequiredService<ParkopolisDbContext>();
-                    DbSeeder.Init(context);
+                    //DbSeeder.Init(context);
+                    context.Database.EnsureCreated();
+
                 }
                 catch (Exception ex)
                 {
