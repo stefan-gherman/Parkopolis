@@ -1,20 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using Parkopolis.API.Context;
 using Parkopolis.API.Models;
+using Parkopolis.API.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Parkopolis.API.Services
 {
     public class ParkopolisDbRepository : IParkopolisRepository
     {
         private readonly ParkopolisDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ParkopolisDbRepository(ParkopolisDbContext context)
+       
+        public ParkopolisDbRepository(ParkopolisDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public void AddArea(Area area)
@@ -120,8 +123,8 @@ namespace Parkopolis.API.Services
         {
             var updateParkingLot = _context.ParkingLots.SingleOrDefault(pl => pl.Id == id);
 
-            updateParkingLot.Location = parkingLot.Location;
-            _context.Update(updateParkingLot);
+            CopyClass.CopyParkingLot(parkingLot, updateParkingLot);
+            _context.ParkingLots.Update(updateParkingLot);
             Save();
         }
 
@@ -172,5 +175,6 @@ namespace Parkopolis.API.Services
         {
             throw new NotImplementedException();
         }
+
     }
 }
