@@ -20,7 +20,8 @@
                 </button>
                 <div class="navbar-collapse collapse hide">
                     <ul class="navbar-nav">
-                        @if (signInManager.IsSignedIn(User))
+                        @if (signInManager.IsSignedIn(User) && 
+                            userManager.GetUserAsync(User).Result.Type.ToString().Equals("Admin"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="CityAdmin" asp-action="Index">CityAdmin</a>
@@ -29,11 +30,17 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="ParkingAdmin" asp-action="Index">ParkingAdmin</a>
                             </li>
                         }
-                        else
+                        else if (signInManager.IsSignedIn(User) && 
+                            userManager.GetUserAsync(User).Result.Type.ToString().Equals("Owner"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ParkingAdmin" asp-action="Index">ParkingAdmin</a>
+                            </li>
+                        } else if (signInManager.IsSignedIn(User) &&
+                            userManager.GetUserAsync(User).Result.Type.ToString().Equals("Customer"))
                         {
 
                         }
-
                     </ul>
                     <ul class="nav navbar-nav ml-auto">
 
@@ -42,32 +49,32 @@
                             <li class="nav-item">
                                 <form method="post" asp-action="logout" asp-controller="account">
                                     <button type="submit" class="nav-link btn btn-link btn-link py-0" style="width:auto">
-                                        Logout @User.Identity.Name
+                                        Logout @userManager.GetUserAsync(User).Result.FirstName.ToString()
                                     </button>
                                 </form>
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item">
+                            @*<li class="nav-item">
                                 <a class="nav-link text-dark"
                                    data-toggle="modal"
                                    data-target="#RegisterModalCenter"
                                    asp-area=""
                                    asp-controller="Home">Register</a>
-                            </li>
+                            </li>*@
                             <li class="nav-item">
                                 <a class="nav-link text-dark"
                                    asp-action="register"
                                    asp-controller="account">Register</a>
                             </li>
-                            <li class="nav-item">
+                            @*<li class="nav-item">
                                 <a class="nav-link text-dark"
                                    data-toggle="modal"
                                    data-target="#LoginModalCenter"
                                    asp-area=""
                                    asp-controller="Home">Login</a>
-                            </li>
+                            </li>*@
                             <li class="nav-item">
                                 <a class="nav-link text-dark"
                                    asp-action="login"
