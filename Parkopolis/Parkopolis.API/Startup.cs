@@ -14,6 +14,7 @@ using Parkopolis.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Parkopolis.API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace Parkopolis.API
 {
@@ -53,6 +54,7 @@ namespace Parkopolis.API
             services.AddScoped<IParkopolisRepository, ParkopolisDbRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
+
         }
 
 
@@ -67,6 +69,7 @@ namespace Parkopolis.API
             {
                 app.UseExceptionHandler();
             }
+            app.UseAuthentication();
 
             app.UseMvc();
 
