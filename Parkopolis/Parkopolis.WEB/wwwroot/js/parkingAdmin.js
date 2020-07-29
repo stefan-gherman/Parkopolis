@@ -3,11 +3,14 @@ let parkingSpacesList = [];
 populateParkingLot();
 
 $("#newParkingSpaceSubmit").click(async function () {
-    let parkingLotId = await $("h3").first().attr("id").replace("parkingLotId", "");
+    //let parkingLotId = await $("h3").first().attr("id").replace("parkingLotId", "");
     //alert(parkingLotId);
-    let parkingSpaceName = await $("#parkingSpaceName").val();
-    //alert(parkingSpaceName);
 
+    // HARDOCDED TEMP *****************************************
+    let cityId = 15;
+    let areaId = 8;
+    let parkingLotId = 8;
+    let parkingSpaceName = await $("#parkingSpaceName").val();
 
     let data = {
         "parkingLotId": parkingLotId,
@@ -22,7 +25,7 @@ $("#newParkingSpaceSubmit").click(async function () {
 
     $.ajax({
         type: "POST",
-        url: `http://localhost:1028/api/cities/1/areas/1/parkinglots/${parkingLotId}/parkingspaces`,
+        url: `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces`,
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -40,8 +43,13 @@ $("#newParkingSpaceSubmit").click(async function () {
 
 async function populateParkingLot() {
 
-    let parkingLotId = await $("h3").first().attr("id").replace("parkingLotId", "");
-    $.getJSON(`http://localhost:1028/api/cities/1/areas/1/parkinglots/${parkingLotId}/parkingspaces`, function (data) {
+    // HARDOCDED TEMP *****************************************
+    let cityId = 15;
+    let areaId = 8;
+    let parkingLotId = 8;
+
+    //let parkingLotId = await $("h3").first().attr("id").replace("parkingLotId", "");
+    $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces`, function (data) {
         for (var i = 0; i < data.length; i++) {
             //parkingSpacesList.push(data[i]);
             
