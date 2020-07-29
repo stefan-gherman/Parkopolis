@@ -27,5 +27,9 @@ namespace Parkopolis.WEB.Models
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "User Type")]
+        public UserType UserType { get; set; }
+
     }
 }
