@@ -35,6 +35,7 @@ namespace Parkopolis.WEB
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<ParkopolisDbContext>();
 
 
