@@ -14,6 +14,8 @@ namespace Parkopolis.API.Models
         [MaxLength(12)]
         public string LastName { get; set; }
         public UserType Type { get; set; }
+        public ICollection<ParkingLot> ParkingLots { get; set; }
+
         //Navigation Properties
         //public ICollection<ParkingLot> ParkingLots { get; set; }
         
