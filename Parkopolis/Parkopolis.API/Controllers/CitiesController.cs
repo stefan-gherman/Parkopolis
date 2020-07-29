@@ -55,6 +55,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpDelete("{cityId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult RemoveCity(int cityId)
         {
            if(!_repository.CityExists(cityId))

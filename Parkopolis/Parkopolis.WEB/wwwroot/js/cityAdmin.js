@@ -60,12 +60,15 @@ $("#newCitySubmit").click(async function () {
             alert('fail' + status.code);
         }
     })
-    getCitiesFromDb();
+    await $.getJSON(`http://localhost:1028/api/cities`, async function (data) {
+        for (var i = 0; i < data.length; i++) {
+            allCities.push(data[i]);
+        }
+        $("#citiesContainer").empty();
+        populateCities();
+        allCities = [];
+    });
 });
-
-
-
-// Deleting a City
 
 // Submitting a new Area in a City
 $("#newAreaSubmit").click(async function () {
@@ -184,7 +187,30 @@ async function populateCities() {
         let cityId = this.id.replace("editCity", "");
         handleEditCity(cityId);
     });
+    $("[class*=btn][class*=btn-danger]").click(function () {
+        let cityId = this.id.replace("deleteCity", "");
+        handleDeleteCity(cityId);
+    });
 }
+
+// Deleting a City
+async function handleDeleteCity(cityId) {
+    await $.ajax({
+        url: `http://localhost:1028/api/cities/${cityId}`,
+        type: 'DELETE',
+        success: function (result) {
+            console.log("City deleted successfully.");
+        }
+    });
+    await $.getJSON(`http://localhost:1028/api/cities`, async function (data) {
+        for (var i = 0; i < data.length; i++) {
+            allCities.push(data[i]);
+        }
+        $("#citiesContainer").empty();
+        populateCities();
+        allCities = [];
+    });
+};
 
 // Editing a City
 async function handleEditCity(cityId) {
