@@ -1,17 +1,4 @@
-﻿console.log("before");
-let userTarget = $("#loggedInUser").text();
-console.log(userTarget);
-console.log("after");
-
-console.log("before2");
-let usersTarget = $("#allUsers").text();
-console.log(usersTarget);
-console.log("after2");
-
-
-
-
-
+﻿
 
 populateCitiesDropdown();
 
@@ -58,13 +45,21 @@ function resetAreasDropdown() {
 }
 
 async function populateParkingLotsDropdown() {
+    let loggedInUserId = $("#loggedInUser").text();
+    let loggedInUserRank = 0;
+    await $.getJSON(`http://localhost:1234/api/users/${loggedInUserId}`, function (data) {
+        loggedInUserRank = data.rank;
+    })
+
     let cityId = $("#selectCityParkingAdmin").val();
     let areaId = $("#selectAreaParkingAdmin").val();
     resetParkingLotsDropdown();
     await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots`, function (data) {
         for (var i = 0; i < data.length; i++) {
-            let element = `<option value="${data[i].id}">${data[i].name}</option>`;
-            $("#selectParkingLotParkingAdmin").append(element);
+            if (data[i].applicationUserId == loggedInUserId || loggedInUserRank == 2) {
+                let element = `<option value="${data[i].id}">${data[i].name}</option>`;
+                $("#selectParkingLotParkingAdmin").append(element);
+            }   
         }
     })
 }

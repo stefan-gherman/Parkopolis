@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.Models;
+using Parkopolis.WEB.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,22 +28,41 @@ namespace Parkopolis.WEB.Controllers
 
         // GET: api/<UsersController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<TempUser> Get()
         {
-            List<string> allUsersIds = new List<string>();
+            
+            List<TempUser> allUsersTemp = new List<TempUser>();
             var allUsersFromUserManager = userManager.Users;
             foreach (var user in allUsersFromUserManager)
             {
-                allUsersIds.Add(user.Id);
+                allUsersTemp.Add(new TempUser()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Rank = (int)user.Type
+                });
             }
-            return allUsersIds;
+            return allUsersTemp;
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public TempUser Get(string id)
         {
-            return "value";
+            TempUser resultUser = new TempUser();
+            var allUsersFromUserManager = userManager.Users;
+            foreach (var user in allUsersFromUserManager)
+            {
+                if (user.Id == id)
+                {
+                    resultUser.Id = user.Id;
+                    resultUser.FirstName = user.FirstName;
+                    resultUser.LastName = user.LastName;
+                    resultUser.Rank = (int)user.Type;
+                }
+            }
+            return resultUser;
         }
 
         // POST api/<UsersController>
