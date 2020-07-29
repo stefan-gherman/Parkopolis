@@ -76,13 +76,23 @@ async function populateResultingParkingSapces() {
                 status = "Taken";
                 buttonClass = "btn btn-danger"
             }
+            let hasCarWash = "";
+            if (data[i].hasCarWash == true) {
+                hasCarWash = `<span><img src="img/carWash.png" alt="Car Wash" height="30"/></span>`
+            }
+            let hasCover = "";
+            if (data[i].isCovered == true) {
+                hasCover = `<span><img src="img/carCover.png" alt="Car Cover" height="30"/></span>`
+            }
+            let price = data[i].price;
+            let hasSecurity = `<span><img src="img/carSecurityGuard.png" alt="Security" height="30"/></span>`
             let element = `
                         <li class="list-group-item">
                             <div class="container">
                                 <div class="d-flex justify-content-between">
                                     <p>${data[i].name}</p>
                                     <p>
-                                        <span>Wash</span> <span>Roof</span> <span>Security</span> <span>10 RON</span>
+                                        ${hasCarWash} ${hasCover} ${hasSecurity} <span>${price} RON</span>
                                     </p>
                                     <button id="parkingSpace${data[i].id}" class="${buttonClass}">${status}</button>
                                 </div>
