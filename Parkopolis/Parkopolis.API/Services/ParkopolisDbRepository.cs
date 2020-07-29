@@ -191,7 +191,7 @@ namespace Parkopolis.API.Services
             return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<ParkingLot> GetParkingLotsIncludingId(int areaId)
+        public IEnumerable<ParkingLot> GetParkingLotsIncludingParkingSpacesById(int areaId)
         {
             return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.AreaId == areaId).ToList();
         }
