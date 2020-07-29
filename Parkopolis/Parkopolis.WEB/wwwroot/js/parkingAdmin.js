@@ -1,5 +1,18 @@
-﻿
-let parkingSpacesList = [];
+﻿console.log("before");
+let userTarget = $("#loggedInUser").text();
+console.log(userTarget);
+console.log("after");
+
+console.log("before2");
+let usersTarget = $("#allUsers").text();
+console.log(usersTarget);
+console.log("after2");
+
+
+
+
+
+
 populateCitiesDropdown();
 
 $("#selectCityParkingAdmin").change(function () {

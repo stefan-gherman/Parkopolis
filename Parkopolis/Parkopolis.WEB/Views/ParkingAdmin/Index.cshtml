@@ -7,54 +7,60 @@
 
 <h1>Parking Lot Admin</h1>
 
+@if (signInManager.IsSignedIn(User))
+{
+    <p hidden id="loggedInUser">@userManager.GetUserAsync(User).Result.Id</p>
+}
+
+
 @if (signInManager.IsSignedIn(User) && (userManager.GetUserAsync(User).Result.Type.ToString().Equals("Admin")
-  || userManager.GetUserAsync(User).Result.Type.ToString().Equals("Owner")))
+ || userManager.GetUserAsync(User).Result.Type.ToString().Equals("Owner")))
 {
 
-<form>
-    <div class="form-group">
-        <select class="form-control" id="selectCityParkingAdmin">
-            <option value="" disabled selected hidden>City</option>
-        </select>
-    </div>
-</form>
-<form>
-    <div class="form-group">
-        <select class="form-control" id="selectAreaParkingAdmin">
-            <option value="" disabled selected hidden>Area</option>
-        </select>
-    </div>
-</form>
-<form>
-    <div class="form-group">
-        <select class="form-control" id="selectParkingLotParkingAdmin">
-            <option value="" disabled selected hidden>Parking Lot</option>
-        </select>
-    </div>
-</form>
-<hr />
-<form>
-    <div class="form-group">
-        <input type="text" class="form-control" id="parkingSpaceName" placeholder="Enter the Parking Space Name here.">
-        <input type="number" class="form-control" id="parkingSpacePrice" step=".01" placeholder="Enter the Parking Space price here. Example: 10.45">
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="hasCarWash">
-            <label class="form-check-label" for="hasCarWash">Has Car Wash Service</label>
+    <form>
+        <div class="form-group">
+            <select class="form-control" id="selectCityParkingAdmin">
+                <option value="" disabled selected hidden>City</option>
+            </select>
         </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="hasCover">
-            <label class="form-check-label" for="hasCover">Has Cover (roof or underground)</label>
+    </form>
+    <form>
+        <div class="form-group">
+            <select class="form-control" id="selectAreaParkingAdmin">
+                <option value="" disabled selected hidden>Area</option>
+            </select>
         </div>
-    </div>
-    <button id="newParkingSpaceSubmit" type="submit" class="btn btn-primary">Add Parking Space</button>
+    </form>
+    <form>
+        <div class="form-group">
+            <select class="form-control" id="selectParkingLotParkingAdmin">
+                <option value="" disabled selected hidden>Parking Lot</option>
+            </select>
+        </div>
+    </form>
+    <hr />
+    <form>
+        <div class="form-group">
+            <input type="text" class="form-control" id="parkingSpaceName" placeholder="Enter the Parking Space Name here.">
+            <input type="number" class="form-control" id="parkingSpacePrice" step=".01" placeholder="Enter the Parking Space price here. Example: 10.45">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="hasCarWash">
+                <label class="form-check-label" for="hasCarWash">Has Car Wash Service</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="hasCover">
+                <label class="form-check-label" for="hasCover">Has Cover (roof or underground)</label>
+            </div>
+        </div>
+        <button id="newParkingSpaceSubmit" type="submit" class="btn btn-primary">Add Parking Space</button>
 
-</form>
-<hr />
-<div class="container">
-    <div class="list-group" id="parkingSpaceList">
+    </form>
+    <hr />
+    <div class="container">
+        <div class="list-group" id="parkingSpaceList">
+        </div>
     </div>
-</div>
-    
+
 
 }
 else
