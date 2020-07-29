@@ -2,7 +2,6 @@
 populateUserDopdown();
 
 
-
 async function populateUserDopdown() {
     await $.getJSON('http://localhost:1234/api/users', function (data) {
         let userRank = "";
@@ -24,6 +23,12 @@ async function populateUserDopdown() {
         }
     });
 };
+
+// makuserAdmin... click API with PUT/PATCH
+
+// make user Owner
+
+// make user Consumer
 
 
 // CITY, AREA, PARKING LOT MANAGEMENT

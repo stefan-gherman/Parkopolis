@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.Models;
 using Parkopolis.WEB.Models;
@@ -73,12 +74,40 @@ namespace Parkopolis.WEB.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async void Put(string id, [FromBody] TempUser tempUserFromRequest)
         {
+            var user = await userManager.FindByIdAsync(id);
+
+            user.Type = (UserType)tempUserFromRequest.Rank;
+
+            //string userId = tempUserFromRequest.Id;
+
+            //DbUser tempDbUser = new DbUser();
+            //var allUsersFromDb = userManager.Users;
+            //var tempuserFromDb = allUsersFromDb.FirstOrDefault(u => u.Id == userId);
+
+            //tempuserFromDb.Type = (UserType)tempUserFromRequest.Rank;
+            await userManager.UpdateAsync(user);
         }
 
-        // DELETE api/<UsersController>/5
-        [HttpDelete("{id}")]
+        [HttpPatch]
+        public IActionResult PartiallyUpdateUser([FromBody] JsonPatchDocument<TempUser> patchDoc)
+        {
+            TempUser tempUserFromPatch = new TempUser();
+            patchDoc.ApplyTo(tempUserFromPatch);
+            string userId = tempUserFromPatch.Id;
+
+            DbUser tempDbUser = new DbUser();
+            var allUsersFromDb = userManager.Users;
+            var tempuserFromDb = allUsersFromDb.FirstOrDefault(u => u.Id == userId);
+
+            tempuserFromDb.Type = (UserType)tempUserFromPatch.Rank;
+            userManager.UpdateAsync(tempuserFromDb);
+            return NoContent();
+        }
+
+            // DELETE api/<UsersController>/5
+            [HttpDelete("{id}")]
         public void Delete(int id)
         {
         }
