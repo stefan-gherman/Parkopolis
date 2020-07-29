@@ -16,6 +16,7 @@ namespace Parkopolis.API.Services
         public City GetCityById(int id);
         public void AddCity(City cityToAdd);
         public void RemoveCity(City city);
+        public void UpdateCity(int id, City city);
 
         //Areas
         public IEnumerable<Area> GetAllAreas();
@@ -24,6 +25,7 @@ namespace Parkopolis.API.Services
         public Area GetAreaById(int id);
         public void AddArea(Area area);
         public void RemoveArea(Area area);
+        public void UpdateArea(int id, Area area);
 
         //Parking Lot
         public IEnumerable<ParkingLot> GetAllParkingLots();
@@ -48,7 +50,6 @@ namespace Parkopolis.API.Services
 
 
         //Additional Queries
-
         public IEnumerable<ParkingLot> GetAllParkingLotsIncludingParkingSpaces();
         public IEnumerable<ParkingLot> GetParkingLotsIncludingParkingSpacesById(int areaId);
         public ParkingLot GetParkingLotByIdIncludingParkingSpaces(int id);
