@@ -168,12 +168,16 @@ namespace Parkopolis.API.Services
 
         public void UpdateParkingSpace(int id, ParkingSpace parkingSpace)
         {
-            throw new NotImplementedException();
+            var updateParkingSpace = _context.ParkingSpaces.SingleOrDefault(pl => pl.Id == id);
+
+            CopyClass.CopyParkingSpace(parkingSpace, updateParkingSpace);
+            _context.ParkingSpaces.Update(updateParkingSpace);
+            Save();
         }
 
         public void PatchParkingSpace(int id, ParkingSpace parkingSpace)
         {
-            throw new NotImplementedException();
+            UpdateParkingSpace(id, parkingSpace);
         }
 
     }
