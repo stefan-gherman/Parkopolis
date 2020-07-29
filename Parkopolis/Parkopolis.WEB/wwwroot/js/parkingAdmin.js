@@ -11,19 +11,23 @@ $("#newParkingSpaceSubmit").click(async function () {
     let areaId = 8;
     let parkingLotId = 8;
     let parkingSpaceName = await $("#parkingSpaceName").val();
+    let parkingSpacePrice = await $("#parkingSpacePrice").val();
+    let parkingSpaceDetails = await $("#parkingSpaceDetails").val();
+    let hasCarWash = await $("input[id='hasCarWash']:checked").val();
+    let hasCover = await $("input[id='hasCcover']:checked").val();
 
     let data = {
         "parkingLotId": parkingLotId,
         "name": parkingSpaceName,
         "isTaken": false,
-        "hasCarWash": true,
-        "isCovered": true,
-        "price": 10.0,
-        "details": "Close to exit."
+        "hasCarWash": hasCarWash,
+        "isCovered": hasCover,
+        "price": parkingSpacePrice,
+        "details": parkingSpaceDetails
     };
     
 
-    $.ajax({
+    await $.ajax({
         type: "POST",
         url: `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces`,
         data: JSON.stringify(data),
