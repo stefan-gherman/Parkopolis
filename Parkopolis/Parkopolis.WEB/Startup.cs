@@ -31,7 +31,7 @@ namespace Parkopolis.WEB
             options.UseSqlServer(connectionString));
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
-                options.Password.RequiredLength = 10;
+                options.Password.RequiredLength = 5;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
