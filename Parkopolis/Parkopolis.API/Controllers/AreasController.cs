@@ -77,6 +77,23 @@ namespace Parkopolis.API.Controllers
             _repo.RemoveArea(_repo.GetAreaById(areaId));
             return NoContent();
         }
+        [HttpPut("{areaId}")]
+        [EnableCors]
+        public IActionResult UpdateArea (int cityId, int areaId, Area area)
+        {
+            if (!_repo.CityExists(cityId))
+            {
+                return NotFound("No city");
+            }
+            if (!_repo.AreaExists(areaId))
+            {
+                return NotFound("Area not found");
+            }
+            area.CityId = cityId;
+
+            _repo.UpdateArea(areaId, area);
+            return NoContent();
+        }
 
     }
 }
