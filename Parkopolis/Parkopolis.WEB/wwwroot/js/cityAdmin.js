@@ -1,4 +1,33 @@
-﻿let allCities = []
+﻿// USER PROMOTION AND DEMOTION
+populateUserDopdown();
+
+
+
+async function populateUserDopdown() {
+    await $.getJSON('http://localhost:1234/api/users', function (data) {
+        let userRank = "";
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].rank == 0) {
+                userRank = "Consumer";
+            }
+            else if (data[i].rank == 1) {
+                userRank = "Parking Lot Owner";
+            }
+            else if (data[i].rank == 2) {
+                userRank = "Admin";
+            }
+            else {
+                userRank = "Unknown";
+            }
+            let element = `<option value="${data[i].id}">${data[i].firstName} ${data[i].lastName} (${userRank}) (${data[i].id})</option>`;
+            $("#selectUserCityAdmin").append(element);
+        }
+    });
+};
+
+
+// CITY, AREA, PARKING LOT MANAGEMENT
+let allCities = []
 getCitiesFromDb();
 
 // Submitting a new city
