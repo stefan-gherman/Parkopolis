@@ -207,7 +207,10 @@ namespace Parkopolis.API.Services
 
         public void UpdateArea(int id, Area area)
         {
-            throw new NotImplementedException();
+            var areaUpdate = _context.Areas.SingleOrDefault(a => a.Id == id);
+            CopyClass.CopyArea(area, areaUpdate);
+            _context.Areas.Update(areaUpdate);
+            Save();
         }
     }
 }
