@@ -1,30 +1,40 @@
-﻿
+﻿@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
+
 @{
     ViewData["Title"] = "Parking Admin";
 }
 
 <h1>Parking Lot Admin</h1>
 
-<h3 id="parkingLotId1">Ionescu Parking hardcoded for now</h3>
+@if (signInManager.IsSignedIn(User) && (userManager.GetUserAsync(User).Result.Type.ToString().Equals("Admin")
+  || userManager.GetUserAsync(User).Result.Type.ToString().Equals("Owner")))
+{
+
+    <h3 id="parkingLotId1">Ionescu Parking hardcoded for now</h3>
     <hr />
 
-<div class="container">
-    <div class="list-group" id="parkingSpaceList">
+    <div class="container">
+        <div class="list-group" id="parkingSpaceList">
+        </div>
     </div>
-</div>
     <hr />
-<form>
-    <div class="form-group">
-        <input type="text" class="form-control" id="parkingSpaceName" placeholder="Enter the Parking Space Name here.">
-    </div>
-    <button id="newParkingSpaceSubmit" type="submit" class="btn btn-primary">Add Parking Space</button>
+    <form>
+        <div class="form-group">
+            <input type="text" class="form-control" id="parkingSpaceName" placeholder="Enter the Parking Space Name here.">
+        </div>
+        <button id="newParkingSpaceSubmit" type="submit" class="btn btn-primary">Add Parking Space</button>
 
-</form>
-    
-    
+    </form>
+
+}
+else
+{
+    <h2>Sorry, this page is not available.</h2>
+}
 
 
-    @section Scripts {
-        <script src="~/js/parkingAdmin.js"></script>
+@section Scripts {
+    <script src="~/js/parkingAdmin.js"></script>
 
-    }
+}
