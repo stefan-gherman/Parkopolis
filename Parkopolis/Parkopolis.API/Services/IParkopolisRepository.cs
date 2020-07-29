@@ -45,5 +45,12 @@ namespace Parkopolis.API.Services
         public void RemoveParkingSpace(ParkingSpace parkingSpace);
         public void UpdateParkingSpace(int id, ParkingSpace parkingSpace);
         public void PatchParkingSpace(int id, ParkingSpace parkingSpace);
+
+
+        //Additional Queries
+
+        public IEnumerable<ParkingLot> GetAllParkingLotsIncludingParkingSpaces();
+        public IEnumerable<ParkingLot> GetParkingLotsIncludingParkingSpacesById(int areaId);
+        public ParkingLot GetParkingLotByIdIncludingParkingSpaces(int id);
     }
 }

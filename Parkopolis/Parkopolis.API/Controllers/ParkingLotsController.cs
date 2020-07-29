@@ -22,19 +22,22 @@ namespace Parkopolis.API.Controllers
             _repo = repo;
         }
         [HttpGet]
-        public IActionResult GetParkingLots(int cityId, int areaId)
+        public IActionResult GetParkingLots(int cityId, int areaId, bool includeParkingSpots)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
             if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
 
-           
+           if(includeParkingSpots)
+            {
+                return Ok(_repo.GetParkingLotsIncludingParkingSpacesById(areaId));
+            }
 
             return Ok(_repo.GetParkingLots(areaId));
         }
 
         [HttpGet("{parkingLotId}")]
-        public IActionResult GetParkingLot(int cityId, int areaId, int parkingLotId)
+        public IActionResult GetParkingLot(int cityId, int areaId, int parkingLotId, bool includeParkingSpots)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
@@ -43,7 +46,12 @@ namespace Parkopolis.API.Controllers
             if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
 
 
-            return Ok(_repo.GetParkingLots(areaId));
+            if (includeParkingSpots)
+            {
+                return Ok(_repo.GetParkingLotByIdIncludingParkingSpaces(parkingLotId));
+            }
+
+            return Ok(_repo.GetParkingLotById(parkingLotId));
         }
 
         [HttpPost]
@@ -55,7 +63,10 @@ namespace Parkopolis.API.Controllers
             if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
 
             //parkingLot.AreaId = areaId;
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _repo.AddParkingLot(parkingLot);
             return NoContent();
         }
@@ -111,6 +122,8 @@ namespace Parkopolis.API.Controllers
             parkingLotFromStore.IsStateOwned = parkingLotToPatch.IsStateOwned;
             parkingLotFromStore.Location = parkingLotToPatch.Location;
             parkingLotFromStore.TotalParkingSpaces = parkingLotToPatch.TotalParkingSpaces;
+
+            _repo.PatchParkingLot(parkingLotId, parkingLotFromStore);
 
             return NoContent();
         }
