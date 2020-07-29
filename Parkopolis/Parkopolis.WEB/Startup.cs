@@ -27,10 +27,16 @@ namespace Parkopolis.WEB
             services.AddControllersWithViews();
             var connectionString = Configuration.GetConnectionString("Development");
             services.AddMvc(option => option.EnableEndpointRouting = false);
-
             services.AddDbContext<ParkopolisDbContext>(options => 
             options.UseSqlServer(connectionString));
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ParkopolisDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 10;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+            }).AddEntityFrameworkStores<ParkopolisDbContext>();
+
 
         }
 
