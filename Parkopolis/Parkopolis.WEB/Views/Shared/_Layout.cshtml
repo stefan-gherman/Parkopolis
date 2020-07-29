@@ -1,4 +1,5 @@
 ﻿@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,44 +20,59 @@
                 </button>
                 <div class="navbar-collapse collapse hide">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CityAdmin" asp-action="Index">CityAdmin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ParkingAdmin" asp-action="Index">ParkingAdmin</a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
                         {
-                        <li class="nav-item">
-                            <form method="post" asp-action="logout" asp-controller="account">
-                                <button type="submit" class="nav-link btn btn-link py-0">
-                                    Logout @User.Identity.Name
-                                </button>
-                            </form>
-                        </li>
-                        } else {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CityAdmin" asp-action="Index">CityAdmin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ParkingAdmin" asp-action="Index">ParkingAdmin</a>
+                            </li>
+                        }
+                        else
+                        {
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               data-toggle="modal"
-                               data-target="#RegisterModalCenter"
-                               asp-area=""
-                               asp-controller="Home">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-action="register"
-                               asp-controller="account">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               data-toggle="modal"
-                               data-target="#LoginModalCenter"
-                               asp-area=""
-                               asp-controller="Home">Login</a>
-                        </li>
+                        }
+
+                    </ul>
+                    <ul class="nav navbar-nav ml-auto">
+
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-action="logout" asp-controller="account">
+                                    <button type="submit" class="nav-link btn btn-link btn-link py-0" style="width:auto">
+                                        Logout @User.Identity.Name
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                   data-toggle="modal"
+                                   data-target="#RegisterModalCenter"
+                                   asp-area=""
+                                   asp-controller="Home">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                   asp-action="register"
+                                   asp-controller="account">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                   data-toggle="modal"
+                                   data-target="#LoginModalCenter"
+                                   asp-area=""
+                                   asp-controller="Home">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                   asp-action="login"
+                                   asp-controller="account">Login</a>
+                            </li>
                         }
                     </ul>
                 </div>
