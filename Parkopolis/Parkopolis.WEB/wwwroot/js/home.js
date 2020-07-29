@@ -1,4 +1,84 @@
-﻿populateCitiesDropdown();
+﻿// CURRENTLY PAYING FOR PARKING SPACE DISPLAY
+async function generateWarningCardOnTop(cityId, areaId, parkingLotId, parkingSpaceId) {
+    let largeUrl = `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces/${parkingSpaceId}`;
+    let payingParkingSpaceName = "";
+    let payingParkingSpaceHasCarWash = false;
+    let payingParkingSpaceCityName = "";
+    let payingParkingSpaceAreaName = "";
+    let payingParkingSpaceParkingLotName = "";
+    let payingParkingSpacePrice = 0.0;
+    await $.getJSON(`http://localhost:1028/api/cities/${cityId}`, function (data) {
+        payingParkingSpaceCityName = data.name;
+    });
+    await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}`, function (data) {
+        payingParkingSpaceAreaName = data.name;
+    });
+    await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}`, function (data) {
+        payingParkingSpaceParkingLotName = data.name;
+    });
+    await $.getJSON(largeUrl, function (data) {
+        payingParkingSpaceName = data.name;
+        payingParkingSpaceHasCarWash = data.hasCarWash;
+        payingParkingSpacePrice = data.price;
+    });
+    let orderCarWashElement = "";
+    if (payingParkingSpaceHasCarWash) {
+        orderCarWashElement = `<a href="#">Car Wash pricing and details</a>`
+    }
+
+    let element = `
+                    <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+                      <div class="card-header">${payingParkingSpaceParkingLotName}</div>
+                      <div class="card-body">
+                        <h5 class="card-title">${payingParkingSpaceName} - ${payingParkingSpacePrice} RON/h</h5>
+                        <p class="card-text">${payingParkingSpaceCityName} - ${payingParkingSpaceAreaName}</p>
+                        <p class="card-text">${orderCarWashElement}</p>
+                        <p class="card-text">Contact Security - 555 212 1911</p>
+                        <p><a href="#">Google Maps Directions</a><p>
+                        <p><button id="leaveParkingSpaceButton" class="btn btn-danger">Leave Parking Space</button><p>
+                      </div>
+                    `
+    $("#payingParkingSpaceContainer").append(element);
+    $("#leaveParkingSpaceButton").click(function () {
+        $("#payingParkingSpaceContainer").empty();
+        setParkingSpaceToFree(largeUrl);
+    });
+}
+
+async function setParkingSpaceToFree(largeUrl) {
+    await $.getJSON(largeUrl, async function (data) {
+        data =
+            [
+                {
+                    "op": "replace",
+                    "path": "/isTaken",
+                    "value": false
+                }
+            ]
+        await $.ajax({
+            type: "PATCH",
+            url: largeUrl,
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function () {
+                console.log("Spot freed-up successfully.");
+            },
+            error: function (jqXHR, status) {
+                // error handler
+                console.log(jqXHR);
+                alert('fail' + status.code);
+            }
+        })
+        // refreshing the Parking Spaces only
+        populateResultingParkingSapces();
+    });
+};
+
+
+// MAIN SELECTION CONTENT CITY > AREA > PARKINLOT > PARKINGSPACE
+populateCitiesDropdown();
 
 $("#selectCityHome").change(function () {
     populateAreasDropdown();
@@ -108,12 +188,14 @@ async function populateResultingParkingSapces() {
     
 }
 
+//Take parking space button pressed
 async function handleTakeParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId) {
     // first get the parking space for data
     let URL = `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces/${parkingSpaceId}`;
 
     // the action when the user presses Take
     await $.getJSON(URL, async function (data) {
+        
         data = 
             [
                 {
@@ -141,6 +223,7 @@ async function handleTakeParkingSpace(cityId, areaId, parkingLotId, parkingSpace
         })
         // refreshing the Parking Spaces only
         populateResultingParkingSapces();
+        generateWarningCardOnTop(cityId, areaId, parkingLotId, parkingSpaceId);
     });
 
     
