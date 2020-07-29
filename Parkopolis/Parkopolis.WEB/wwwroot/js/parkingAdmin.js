@@ -92,16 +92,23 @@ async function populateResultingParkingSapces() {
 
 $("#newParkingSpaceSubmit").click(async function (event) {
     event.preventDefault();
-    
-    
+
     let cityId = $("#selectCityParkingAdmin").val();
     let areaId = $("#selectAreaParkingAdmin").val();
     let parkingLotId = $("#selectParkingLotParkingAdmin").val();
     let parkingSpaceName = await $("#parkingSpaceName").val();
     let parkingSpacePrice = await $("#parkingSpacePrice").val();
     let parkingSpaceDetails = await $("#parkingSpaceDetails").val();
-    let hasCarWash = await $("input[id='hasCarWash']:checked").val();
-    let hasCover = await $("input[id='hasCcover']:checked").val();
+    let hasCarWash = false;
+    if (await $("input[id='hasCarWash']:checked").val() === "on") {
+        hasCarWash = true;
+    }
+    alert(`hasCarWash: ${hasCarWash}`);
+    let hasCover = false;
+    if (await $("#hasCover").val() === "on") {
+        hasCover = true;
+    }
+    alert(`hasCover: ${hasCover}`);
 
     let data = {
         "parkingLotId": parkingLotId,
