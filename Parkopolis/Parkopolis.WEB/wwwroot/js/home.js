@@ -101,20 +101,20 @@ async function populateResultingParkingSapces() {
 async function handleTakeParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId) {
     // first get the parking space for data
     let URL = `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces/${parkingSpaceId}`;
+
+    // the action when the user presses Take
     await $.getJSON(URL, async function (data) {
-        //data.isTaken = true;
-        data = {
-            "id": parkingSpaceId,
-            "parkingLotId": 3,
-            "name": "ty897",
-            "isTaken": true,
-            "hasCarWash": true,
-            "isCovered": true,
-            "price": 12.24,
-            "details": "Near exit"
-        }
+        data = 
+            [
+                {
+                    "op": "replace",
+                    "path": "/isTaken",
+                    "value": true
+                }
+            ]
+        
         await $.ajax({
-            type: "PUT",
+            type: "PATCH",
             url: URL,
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
@@ -129,8 +129,11 @@ async function handleTakeParkingSpace(cityId, areaId, parkingLotId, parkingSpace
                 alert('fail' + status.code);
             }
         })
+        // refreshing the Parking Spaces only
+        populateResultingParkingSapces();
     });
 
+    
 
 
     //console.log("reached handle function too");

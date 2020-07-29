@@ -86,6 +86,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPatch("{parkingSpaceId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult PartiallyUpdateParkingSpace(int cityId, int areaId, int parkingLotId, int parkingSpaceId,
             [FromBody] JsonPatchDocument<ParkingSpaceForUpdateDto> patchDoc)
         {
