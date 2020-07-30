@@ -144,7 +144,13 @@ async function populateResultingParkingSapces() {
     let cityId = $("#selectCityHome").val();
     let areaId = $("#selectAreaHome").val();
     let parkingLotId = $("#selectParkingLotHome").val();
+    let loggedInUserId = $("#loggedInUser").text();
+    let disabledAttribute = "";
     await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces`, function (data) {
+        if (loggedInUserId.length < 10) {
+            disabledAttribute = "disabled";
+        }
+        
         for (var i = 0; i < data.length; i++) {
             let status = "Take";
             let buttonClass = "btn btn-success"
@@ -174,7 +180,7 @@ async function populateResultingParkingSapces() {
                                     <p>
                                         ${hasCarWash} ${hasCover} ${hasSecurity} <span>${price} RON</span>
                                     </p>
-                                    <button id="parkingSpace${data[i].id}" class="${buttonClass}">${status}</button>
+                                    <button id="parkingSpace${data[i].id}" class="${buttonClass}" ${disabledAttribute}>${status}</button>
                                 </div>
                             </div>
                         </li> `;
@@ -226,33 +232,4 @@ async function handleTakeParkingSpace(cityId, areaId, parkingLotId, parkingSpace
         generateWarningCardOnTop(cityId, areaId, parkingLotId, parkingSpaceId);
     });
 
-    
-
-
-    //console.log("reached handle function too");
-    //async function () {
-    //    console.log($("#cityName").val());
-    //    let newCityName = $("#cityName").val();
-    //    //alert(name);
-    //    let data = { "name": newCityName };
-    //    //data[name] = newCityName;
-    //    console.log(data);
-
-    //    await $.ajax({
-    //        type: "POST",
-    //        url: "http://localhost:1028/api/cities",
-    //        data: JSON.stringify(data),
-    //        contentType: "application/json; charset=utf-8",
-    //        crossDomain: true,
-    //        dataType: "json",
-    //        success: function () {
-    //            console.log("City added successfully.");
-    //        },
-    //        error: function (jqXHR, status) {
-    //            // error handler
-    //            console.log(jqXHR);
-    //            alert('fail' + status.code);
-    //        }
-    //    })
-    //    getCitiesFromDb();
 }
