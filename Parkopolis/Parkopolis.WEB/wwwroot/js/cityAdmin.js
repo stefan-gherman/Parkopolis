@@ -1,5 +1,5 @@
 ﻿let allCities = []
-getCitiesFromDb();// USER PROMOTION AND DEMOTION
+getCitiesFromDb();
 populateUserDopdown();
 
 
@@ -162,13 +162,14 @@ $("#newParkingLotSubmit").click(async function () {
     alert("Check DB");
 });
 
+// Initial City Dropdowns populating with options
 async function getCitiesFromDb() {
     await $.getJSON(`http://localhost:1028/api/cities`, function (data) {
         for (var i = 0; i < data.length; i++) {
             allCities.push(data[i]);
         }   
     });
-    populateCities();
+    await populateCities();
     populateCitiesSelectAddArea();
     populateCitiesSelectAddParkingLot();
     allCities = [];
