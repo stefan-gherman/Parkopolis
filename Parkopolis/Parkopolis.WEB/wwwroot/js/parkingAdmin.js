@@ -159,6 +159,23 @@ async function handleEditParkingSpace(cityId, areaId, parkingLotId, parkingSpace
 
 async function handleDeleteParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId) {
     console.log("Entered Delete process")
+    let largeUrl = `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces/${parkingSpaceId}`;
+    await $.ajax({
+        type: "DELETE",
+        url: largeUrl,
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        success: function () {
+            console.log("Spot deleted successfully.");
+        },
+        error: function (jqXHR, status) {
+            // error handler
+            console.log(jqXHR);
+            alert('fail' + status.code);
+        }
+    })
+    // refreshing the Parking Spaces only
+    populateResultingParkingSapces();
 };
 
 
