@@ -218,7 +218,7 @@ async function handleEditParkingSpace(cityId, areaId, parkingLotId, parkingSpace
     })
     $("#editParkingSpaceCancel").click(function (event) {
         event.preventDefault();
-        $("#editParkingSpaceContainer").empty();
+        $(`#editParkingSpaceContainer${parkingSpaceId}`).empty();
     })
     $("#editParkingSpaceSubmit").click(async function (event) {
         event.preventDefault();
