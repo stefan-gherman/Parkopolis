@@ -59,7 +59,7 @@ namespace Parkopolis.API.Services
         public IEnumerable<Area> GetAreasWithParkingLotCount(int cityId);
         public Area GetAreaWithParkingLotCount( int cityId, int areaId);
         public IEnumerable<ParkingLot> GetAllParkingLotsForUserIncludingParkingSpots(string userId);
-
+        public void DeleteUser(string userId);
 
         //User Queries
         public bool UserExists(string id);
