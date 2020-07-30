@@ -2,6 +2,7 @@
 getCitiesFromDb();
 populateUserDopdown();
 
+// USER MANAGEMENT
 
 async function populateUserDopdown() {
     await $.getJSON('http://localhost:1234/api/users', function (data) {
@@ -25,7 +26,43 @@ async function populateUserDopdown() {
     });
 };
 
-// makuserAdmin... click API with PUT/PATCH
+// make user Admin
+$("#makeUserAdmin").click(async function (event) {
+    event.preventDefault();
+    let adminRank = 2;
+    let userId = $("#selectUserCityAdmin").val();
+    let tempUser = {
+        "id": "",
+        "firstName": "",
+        "lastName": "",
+        "rank": 0
+    };
+    await $.getJSON(`http://localhost:1234/api/users/${userId}`, async function (data) {
+        tempUser.id = data.id;
+        tempUser.firstName = data.firstName;
+        tempUser.lastName = data.lastName;
+        tempUser.rank = adminRank;
+    })
+    //alert(`make admin pressed ${tempUser.firstName}`);
+    await $.ajax({
+        type: "POST",
+        url: `http://localhost:1234/api/users/${userId}`,
+        data: JSON.stringify(tempUser),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        success: function () {
+            console.log("User promoted to Admin successfully.");
+        },
+        error: function (jqXHR, status) {
+            console.log(jqXHR);
+            console.log('fail' + status.code);
+        }
+    })
+    alert("Check users type")
+
+})
+
 
 // make user Owner
 
@@ -34,14 +71,11 @@ async function populateUserDopdown() {
 
 // CITY, AREA, PARKING LOT MANAGEMENT
 
-
 // Submitting a new city
 $("#newCitySubmit").click(async function () {
     console.log($("#cityName").val());
     let newCityName = $("#cityName").val();
-    //alert(name);
     let data = { "name": newCityName};
-    //data[name] = newCityName;
     console.log(data);
     
     await $.ajax({
@@ -55,9 +89,8 @@ $("#newCitySubmit").click(async function () {
             console.log("City added successfully.");
         },
         error: function (jqXHR, status) {
-            // error handler
             console.log(jqXHR);
-            alert('fail' + status.code);
+            console.log('fail' + status.code);
         }
     })
     await $.getJSON(`http://localhost:1028/api/cities`, async function (data) {
@@ -89,16 +122,14 @@ $("#newAreaSubmit").click(async function () {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            alert("success");
+            console.log("Area added successfully.");
         },
         error: function (jqXHR, status) {
             // error handler
             console.log(jqXHR);
-            alert('fail' + status.code);
+            console.log('fail' + status.code);
         }
     })
-    
-    alert("Check DB");
 });
 
 // Submitting a new Parking Lot based on Area and City
@@ -150,16 +181,14 @@ $("#newParkingLotSubmit").click(async function () {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            alert("success");
+            console.log("Parking lot added successfully.");
         },
         error: function (jqXHR, status) {
             // error handler
             console.log(jqXHR);
-            alert('fail' + status.code);
+            console.log('fail' + status.code);
         }
     })
-
-    alert("Check DB");
 });
 
 // Initial City Dropdowns populating with options
@@ -258,7 +287,7 @@ async function confirmCityEdit(cityId, newCityName) {
         },
         error: function (jqXHR, status) {
             console.log(jqXHR);
-            alert('fail' + status.code);
+            console.log('fail' + status.code);
         }
     })
     $("#editCityFormContainer").empty();    

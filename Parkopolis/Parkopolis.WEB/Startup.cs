@@ -24,6 +24,16 @@ namespace Parkopolis.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("*").SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
             services.AddControllersWithViews();
             var connectionString = Configuration.GetConnectionString("Development");
             services.AddMvc(option => option.EnableEndpointRouting = false);

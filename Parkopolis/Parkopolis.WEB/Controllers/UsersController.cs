@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -72,8 +73,23 @@ namespace Parkopolis.WEB.Controllers
         {
         }
 
+        // POST api/<UsersController>
+        [HttpPost("{id}")]
+        [EnableCors("AllowAnyOrigin")]
+        public async Task<IActionResult> Post(string id, [FromBody] TempUser tempUserFromRequest)
+        {
+            var user = userManager.FindByIdAsync(id).Result;
+
+            user.Type = (UserType)tempUserFromRequest.Rank;
+
+            await userManager.UpdateAsync(user);
+
+            return NoContent();
+        }
+
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
+        [EnableCors("AllowAnyOrigin")]
         public async Task<IActionResult> Put(string id, [FromBody] TempUser tempUserFromRequest)
         {
             
