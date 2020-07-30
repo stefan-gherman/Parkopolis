@@ -1,5 +1,4 @@
-﻿let allCities = []
-getCitiesFromDb();
+﻿getCitiesFromDb();
 populateUserDopdown();
 
 // USER MANAGEMENT
@@ -220,8 +219,6 @@ function resetAreasDropdownAddParkingLot() {
     $("#selectAreaAddParkingLot").append(initialElement);
 }
 
-
-
 $("#newParkingLotSubmit").click(async function () {
     let cityId = $("#selectCityAddParkingLot").val();
     let areaId = $("#selectAreaAddParkingLot").val();
@@ -259,6 +256,7 @@ $("#newParkingLotSubmit").click(async function () {
 
 // Initial City Dropdowns populating with options
 async function getCitiesFromDb() {
+    allCities = [];
     await $.getJSON(`http://localhost:1028/api/cities`, function (data) {
         for (var i = 0; i < data.length; i++) {
             allCities.push(data[i]);
@@ -271,6 +269,7 @@ async function getCitiesFromDb() {
 }
 
 async function populateCities() {
+    $("#citiesContainer").empty();
     for (var i = 0; i < allCities.length; i++) {
         $("#citiesContainer").append(
             `<div id="city${allCities[i].id}"><h2>${allCities[i].name}
@@ -289,6 +288,25 @@ async function populateCities() {
     });
 }
 
+function populateCitiesSelectAddArea() {
+    $("#selectCityAddArea").empty();
+    $("#selectCityAddArea").append(`<option value="" disabled selected hidden>City</option>`);
+    for (var i = 0; i < allCities.length; i++) {
+        let element = `<option value="${allCities[i].id}">${allCities[i].name}</option>`;
+        $("#selectCityAddArea").append(element);
+    }
+
+}
+
+function populateCitiesSelectAddParkingLot() {
+    $("#selectCityAddParkingLot").empty();
+    $("#selectCityAddParkingLot").append(`<option value="" disabled selected hidden>City</option>`);
+    for (var i = 0; i < allCities.length; i++) {
+        let element = `<option value="${allCities[i].id}">${allCities[i].name}</option>`;
+        $("#selectCityAddParkingLot").append(element);
+    }
+}
+
 // Deleting a City
 async function handleDeleteCity(cityId) {
     await $.ajax({
@@ -303,8 +321,7 @@ async function handleDeleteCity(cityId) {
             allCities.push(data[i]);
         }
         $("#citiesContainer").empty();
-        populateCities();
-        allCities = [];
+        getCitiesFromDb();
     });
 };
 
@@ -330,8 +347,7 @@ async function handleEditCity(cityId) {
                 allCities.push(data[i]);
             }
             $("#citiesContainer").empty();
-            populateCities();
-            allCities = [];
+            getCitiesFromDb();
         });
     })
 };
@@ -359,17 +375,3 @@ async function confirmCityEdit(cityId, newCityName) {
     $("#editCityFormContainer").empty();    
 };
 
-function populateCitiesSelectAddArea() {
-    for (var i = 0; i < allCities.length; i++) {
-        let element = `<option value="${allCities[i].id}">${allCities[i].name}</option>`;
-        $("#selectCityAddArea").append(element);
-    }
-    
-}
-
-function populateCitiesSelectAddParkingLot() {
-    for (var i = 0; i < allCities.length; i++) {
-        let element = `<option value="${allCities[i].id}">${allCities[i].name}</option>`;
-        $("#selectCityAddParkingLot").append(element);
-    }
-}
