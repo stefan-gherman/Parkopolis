@@ -144,9 +144,9 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpDelete("{parkingSpaceId}")]
-        public IActionResult DeleteParkingLot(int areaId, int parkingSpaceId)
+        public IActionResult DeleteParkingSpace(int areaId, int parkingSpaceId)
         {
-
+            if (!_repo.ParkingLotExists(parkingSpaceId)) return NotFound("Invalid Parking Lot From Query");
 
             _repo.RemoveParkingSpace(_repo.GetParkingSpaceById(parkingSpaceId));
 

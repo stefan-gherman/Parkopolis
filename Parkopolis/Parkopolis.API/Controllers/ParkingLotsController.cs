@@ -278,11 +278,6 @@ namespace Parkopolis.API.Controllers
                 return NotFound("User not found");
             }
 
-            //if (!_repo.CityExists(cityId)) return NotFound("City not found");
-
-            //if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
-            //if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
 
             if (!ModelState.IsValid)
             {
@@ -291,6 +286,19 @@ namespace Parkopolis.API.Controllers
 
             _repo.RemoveParkingLot(_repo.GetParkingLotById(parkingLotId));
 
+            return NoContent();
+        }
+
+        [HttpDelete("/users/{userId}/deleteuser")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult DeleteUser(string userId)
+        {
+            if (!_repo.UserExists(userId))
+            {
+                return NotFound("User not found");
+            }
+
+            _repo.DeleteUser(userId);
             return NoContent();
         }
     }
