@@ -53,5 +53,10 @@ namespace Parkopolis.API.Services
         public IEnumerable<ParkingLot> GetAllParkingLotsIncludingParkingSpaces();
         public IEnumerable<ParkingLot> GetParkingLotsIncludingParkingSpacesById(int areaId);
         public ParkingLot GetParkingLotByIdIncludingParkingSpaces(int id);
+        public IEnumerable<ParkingLot> GetAllParkingLotsForUser(string userId);
+
+
+        //User Queries
+        public bool UserExists(string id);
     }
 }
