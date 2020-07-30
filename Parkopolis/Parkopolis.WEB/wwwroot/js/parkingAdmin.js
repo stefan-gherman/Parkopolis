@@ -104,30 +104,60 @@ async function populateResultingParkingSapces() {
         $("[class*=btn][class*=btn-success]").click(function (event) {
             event.preventDefault();
             let parkingSpaceId = this.id.replace("forceFree", "");
-            handleForceFreeParkingSpace(parkingSpaceId);
+            handleForceFreeParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId);
         });
         $("[class*=btn][class*=btn-warning]").click(function (event) {
             event.preventDefault();
             let parkingSpaceId = this.id.replace("editParkingSpace", "");
-            handleEditParkingSpace(parkingSpaceId);
+            handleEditParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId);
         });
         $("[class*=btn][class*=btn-danger]").click(function (event) {
             event.preventDefault();
             let parkingSpaceId = this.id.replace("deleteParkingSpace", "");
-            handleDeleteParkingSpace(parkingSpaceId);
+            handleDeleteParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId);
         });
     });
 }
 
-async function handleForceFreeParkingSpace(parkingSpaceId) {
+async function handleForceFreeParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId) {
     console.log("Entered force free process");
+    let largeUrl = `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces/${parkingSpaceId}`;
+    await $.getJSON(largeUrl, async function (data) {
+        data =
+            [
+                {
+                    "op": "replace",
+                    "path": "/isTaken",
+                    "value": false
+                }
+            ]
+        await $.ajax({
+            type: "PATCH",
+            url: largeUrl,
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function () {
+                console.log("Spot freed-up successfully.");
+            },
+            error: function (jqXHR, status) {
+                // error handler
+                console.log(jqXHR);
+                alert('fail' + status.code);
+            }
+        })
+        // refreshing the Parking Spaces only
+        populateResultingParkingSapces();
+    });
+
 };
 
-async function handleEditParkingSpace(parkingSpaceId) {
+async function handleEditParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId) {
     console.log("Entered Edit process");
 };
 
-async function handleDeleteParkingSpace(parkingSpaceId) {
+async function handleDeleteParkingSpace(cityId, areaId, parkingLotId, parkingSpaceId) {
     console.log("Entered Delete process")
 };
 
