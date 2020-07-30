@@ -5,6 +5,8 @@ populateUserDopdown();
 // USER MANAGEMENT
 
 async function populateUserDopdown() {
+    $("#selectUserCityAdmin").empty();
+    $("#selectUserCityAdmin").append(`<option value="" disabled selected hidden>User</option>`);
     await $.getJSON('http://localhost:1234/api/users', function (data) {
         let userRank = "";
         for (var i = 0; i < data.length; i++) {
@@ -59,12 +61,45 @@ $("#makeUserAdmin").click(async function (event) {
             console.log('fail' + status.code);
         }
     })
-    alert("Check users type")
-
+    populateUserDopdown();
 })
 
+// make user Parking Lot Owner
+$("#makeUserParkinglotOwner").click(async function (event) {
+    event.preventDefault();
+    let parkingLotOwnerRank = 1;
+    let userId = $("#selectUserCityAdmin").val();
+    let tempUser = {
+        "id": "",
+        "firstName": "",
+        "lastName": "",
+        "rank": 0
+    };
+    await $.getJSON(`http://localhost:1234/api/users/${userId}`, async function (data) {
+        tempUser.id = data.id;
+        tempUser.firstName = data.firstName;
+        tempUser.lastName = data.lastName;
+        tempUser.rank = parkingLotOwnerRank;
+    })
+    //alert(`make admin pressed ${tempUser.firstName}`);
+    await $.ajax({
+        type: "POST",
+        url: `http://localhost:1234/api/users/${userId}`,
+        data: JSON.stringify(tempUser),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        success: function () {
+            console.log("User promoted to Parking Lot Owner successfully.");
+        },
+        error: function (jqXHR, status) {
+            console.log(jqXHR);
+            console.log('fail' + status.code);
+        }
+    })
+    populateUserDopdown();
+})
 
-// make user Owner
 
 // make user Consumer
 
