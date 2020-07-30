@@ -9,5 +9,7 @@ namespace Parkopolis.API.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public long AreaCount { get; set; }
     }
 }

@@ -27,17 +27,26 @@ namespace Parkopolis.API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult GetCities()
+        public IActionResult GetCities(bool includeAreaCount)
         {
+            if(includeAreaCount)
+            {
+                return Ok(_mapper.Map<IEnumerable<CityDto>>(_repository.GetCitiesWithAreaCount()));
+            }
             return Ok(_repository.GetAllCities());
-            //return Ok(_mapper.Map<IEnumerable<CityDto>>(_repository.GetAllCities()));
+           
         }
 
         [HttpGet("{cityId}")]
-        public IActionResult GetCity(int cityId)
+        public IActionResult GetCity(int cityId, bool includeAreaCount)
         {
+            
             if (!_repository.CityExists(cityId)) return NotFound();
 
+            if (includeAreaCount)
+            {
+                return Ok(_mapper.Map<CityDto>(_repository.GetCityWithAreaCount(cityId)));
+            }
             return Ok(_mapper.Map<CityDto>(_repository.GetCityById(cityId)));
         }
 

@@ -10,7 +10,8 @@ namespace Parkopolis.API.Profile
     {
         public CityProfile()
         {
-            CreateMap<Models.City, Models.CityDto>();
+            CreateMap<Models.City, Models.CityDto>().ForMember(dest => dest.AreaCount,
+                opt => opt.MapFrom(source => source.Areas.Count));
             CreateMap<Models.City, Models.City>();
         }
     }

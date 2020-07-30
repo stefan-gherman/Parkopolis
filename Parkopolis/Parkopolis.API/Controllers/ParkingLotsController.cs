@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Parkopolis.API.MockData;
 using Parkopolis.API.Models;
 using Parkopolis.API.Services;
+using System.Collections;
 using System.Linq;
 
 namespace Parkopolis.API.Controllers
@@ -56,15 +57,18 @@ namespace Parkopolis.API.Controllers
 
         [Route("/users/{userId}/getParkingLots")]
         [HttpGet]
-        public IActionResult GetParkingLotsForUser(string userId)
+        public IActionResult GetParkingLotsForUser(string userId, bool includeparkingspaces)
         {
             if (!_repo.UserExists(userId)) return NotFound("User does not exist");
 
-
+            if (includeparkingspaces)
+            {
+                return Ok(_repo.GetAllParkingLotsForUserIncludingParkingSpots(userId));
+            }
             return Ok(_repo.GetAllParkingLotsForUser(userId));
         }
 
-       
+
         [HttpPost]
         [EnableCors("AllowAnyOrigin")]
         public IActionResult CreateParkingLot(int cityId, int areaId, [FromBody] ParkingLot parkingLot)
@@ -85,15 +89,15 @@ namespace Parkopolis.API.Controllers
         [Route("/users/{userId}/addParkingLot")]
         [HttpPost]
         [EnableCors("AllowAnyOrigin")]
-        public IActionResult AddParkingLotForUser (string userId, [FromBody] ParkingLot parkingLot )
+        public IActionResult AddParkingLotForUser(string userId, [FromBody] ParkingLot parkingLot)
         {
-            if(!_repo.UserExists(userId))
+            if (!_repo.UserExists(userId))
             {
                 return NotFound("User not found");
             }
 
-            
-            if(!ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
                 return BadRequest("Your query is badly formatted");
             }
@@ -102,7 +106,7 @@ namespace Parkopolis.API.Controllers
             _repo.AddParkingLot(parkingLot);
             return NoContent();
         }
-        
+
 
         [HttpPut("{parkingLotId}")]
         public IActionResult UpdateParkingLot(int cityId, int areaId, int parkingLotId, [FromBody] ParkingLot parkingLot)
@@ -125,6 +129,25 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
 
+        [Route("/users/{userId}/editparkinglot")]
+        [HttpPut("{parkingLotId}")]
+        public IActionResult UpdateParkingLotForUser(string userId, int cityId, int areaId, int parkingLotId, [FromBody] ParkingLot parkingLot)
+        {
+            if (!_repo.UserExists(userId))
+            {
+                return NotFound("User not found");
+            }
+
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
+
+            parkingLot.ApplicationUserId = userId;
+            return UpdateParkingLot(cityId, areaId, parkingLotId, parkingLot);
+        }
+
         [HttpPatch("{parkingLotId}")]
         public IActionResult PartiallyUpdateParkingLot(int cityId, int areaId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
         {
@@ -134,7 +157,7 @@ namespace Parkopolis.API.Controllers
 
             if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
 
-            
+
             var parkingLotFromStore = _repo.GetParkingLotById(parkingLotId);
 
             var parkingLotToPatch = new ParkingLotForUpdateDto()
@@ -169,6 +192,25 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
 
+        [Route("/users/{userId}/editparkinglot")]
+        [HttpPatch("{parkingLotId}")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult PartiallyUpdateParkingLot(string userId, int cityId, int areaId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
+        {
+            if (!_repo.UserExists(userId))
+            {
+                return NotFound("User not found");
+            }
+
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
+
+            return PartiallyUpdateParkingLot(cityId, areaId, parkingLotId, patchDoc);
+        }
+
         [HttpDelete("{parkingLotId}")]
         public IActionResult DeleteParkingLot(int cityId, int areaId, int parkingLotId)
         {
@@ -182,6 +224,33 @@ namespace Parkopolis.API.Controllers
             {
                 return BadRequest("Your query is badly formatted");
             }
+            _repo.RemoveParkingLot(_repo.GetParkingLotById(parkingLotId));
+
+            return NoContent();
+        }
+
+        [Route("/users/{userId}/deleteParkingLot")]
+        //[HttpGet("{parkingLotId}")]
+        [HttpDelete("{parkingLotId}")]
+        [EnableCors("AllowAnyOrigin")]
+        public IActionResult DeleteParkingLotForUser(string userId, int cityId, int areaId, int parkingLotId)
+        {
+            if (!_repo.UserExists(userId))
+            {
+                return NotFound("User not found");
+            }
+
+            //if (!_repo.CityExists(cityId)) return NotFound("City not found");
+
+            //if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
+
+            //if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Your query is badly formatted");
+            }
+
             _repo.RemoveParkingLot(_repo.GetParkingLotById(parkingLotId));
 
             return NoContent();

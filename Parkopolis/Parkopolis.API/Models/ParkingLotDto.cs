@@ -17,5 +17,7 @@ namespace Parkopolis.API.Models
         public bool HasSecurity { get; set; }
         //public string Owner { get; set; }
         //public DateTime FreeInterval { get; set; }
+
+        public int ParkingSpotsCount { get; set; }
     }
 }

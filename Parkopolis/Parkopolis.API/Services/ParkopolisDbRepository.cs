@@ -222,5 +222,30 @@ namespace Parkopolis.API.Services
         {
             return _context.Users.Any(u => u.Id.Equals(id));
         }
+
+        public IEnumerable<City> GetCitiesWithAreaCount()
+        {
+            return _context.Cities.Include(c => c.Areas).ToList();
+        }
+
+        public City GetCityWithAreaCount(int cityId)
+        {
+            return _context.Cities.Include(c => c.Areas).Where(c => c.Id == cityId).FirstOrDefault();
+        }
+
+        public IEnumerable<Area> GetAreasWithParkingLotCount(int cityId)
+        {
+            return _context.Areas.Include(a => a.ParkingLots).ToList();
+        }
+
+        public Area GetAreaWithParkingLotCount(int cityId, int areaId)
+        {
+            return _context.Areas.Include(a => a.ParkingLots).Where(a => a.Id == areaId && a.CityId == cityId).FirstOrDefault();
+        }
+
+        public IEnumerable<ParkingLot> GetAllParkingLotsForUserIncludingParkingSpots(string userId)
+        {
+            return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.ApplicationUserId == userId);
+        }
     }
 }
