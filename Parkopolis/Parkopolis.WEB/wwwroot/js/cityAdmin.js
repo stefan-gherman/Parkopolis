@@ -1,11 +1,13 @@
 ﻿getCitiesFromDb();
-populateUserDopdown();
+populateUserDopdowns();
 
 // USER MANAGEMENT
 
-async function populateUserDopdown() {
+async function populateUserDopdowns() {
     $("#selectUserCityAdmin").empty();
+    $("#selectUserAddParkingLot").empty();
     $("#selectUserCityAdmin").append(`<option value="" disabled selected hidden>User</option>`);
+    $("#selectUserAddParkingLot").append(`<option value="" disabled selected hidden>User</option>`);
     await $.getJSON('http://localhost:1234/api/users', function (data) {
         let userRank = "";
         for (var i = 0; i < data.length; i++) {
@@ -23,6 +25,7 @@ async function populateUserDopdown() {
             }
             let element = `<option value="${data[i].id}">${data[i].firstName} ${data[i].lastName} (${userRank}) (${data[i].id})</option>`;
             $("#selectUserCityAdmin").append(element);
+            $("#selectUserAddParkingLot").append(element);
         }
     });
 };
@@ -219,11 +222,13 @@ function resetAreasDropdownAddParkingLot() {
     $("#selectAreaAddParkingLot").append(initialElement);
 }
 
-$("#newParkingLotSubmit").click(async function () {
+$("#newParkingLotSubmit").click(async function (event) {
+    event.preventDefault();
     let cityId = $("#selectCityAddParkingLot").val();
     let areaId = $("#selectAreaAddParkingLot").val();
     let name = $("#parkingLotNameAddParkingLot").val();
-
+    let userId = $("#selectUserAddParkingLot").val();
+    console.log(userId);
     
     let data = {
         "areaId": areaId,
@@ -233,10 +238,10 @@ $("#newParkingLotSubmit").click(async function () {
         "isStateOwned": false,
         "totalParkingSpaces": 21,
         "hasSecurity": true,
-        "userId": 1
+        "applicationUserId": userId
     }
 
-    $.ajax({
+    await $.ajax({
         type: "POST",
         url: `http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots`,
         data: JSON.stringify(data),
