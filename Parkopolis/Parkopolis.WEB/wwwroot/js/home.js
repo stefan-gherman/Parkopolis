@@ -232,33 +232,4 @@ async function handleTakeParkingSpace(cityId, areaId, parkingLotId, parkingSpace
         generateWarningCardOnTop(cityId, areaId, parkingLotId, parkingSpaceId);
     });
 
-    
-
-
-    //console.log("reached handle function too");
-    //async function () {
-    //    console.log($("#cityName").val());
-    //    let newCityName = $("#cityName").val();
-    //    //alert(name);
-    //    let data = { "name": newCityName };
-    //    //data[name] = newCityName;
-    //    console.log(data);
-
-    //    await $.ajax({
-    //        type: "POST",
-    //        url: "http://localhost:1028/api/cities",
-    //        data: JSON.stringify(data),
-    //        contentType: "application/json; charset=utf-8",
-    //        crossDomain: true,
-    //        dataType: "json",
-    //        success: function () {
-    //            console.log("City added successfully.");
-    //        },
-    //        error: function (jqXHR, status) {
-    //            // error handler
-    //            console.log(jqXHR);
-    //            alert('fail' + status.code);
-    //        }
-    //    })
-    //    getCitiesFromDb();
 }

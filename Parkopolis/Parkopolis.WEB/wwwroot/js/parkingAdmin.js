@@ -79,7 +79,7 @@ async function populateResultingParkingSapces() {
     await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces`, function (data) {
         for (var i = 0; i < data.length; i++) {
             let classLink = "list-group-item list-group-item-action list-group-item-success";
-            let forceFreeButtonContent = `<button id="####" class="btn btn-success">Force Free</button>`;
+            let forceFreeButtonContent = `<button id="forceFree${data[i].id}" class="btn btn-success">Force Free</button>`;
             if (data[i].isTaken == true) {
                 classLink = "list-group-item list-group-item-action list-group-item-danger";
             } else {
@@ -93,18 +93,43 @@ async function populateResultingParkingSapces() {
                                     ${forceFreeButtonContent}
                                 </p>
                                 <p>
-                                    <button id="####" class="btn btn-warning">Edit</button>
-                                    <button id="####" class="btn btn-danger">Delete</button>
+                                    <button id="editParkingSpace${data[i].id}" class="btn btn-warning">Edit</button>
+                                    <button id="deleteParkingSpace${data[i].id}" class="btn btn-danger">Delete</button>
                                 </p>
                             </div>
                         </div>
                    </a>`
             $("#parkingSpaceList").append(element);
         }
+        $("[class*=btn][class*=btn-success]").click(function (event) {
+            event.preventDefault();
+            let parkingSpaceId = this.id.replace("forceFree", "");
+            handleForceFreeParkingSpace(parkingSpaceId);
+        });
+        $("[class*=btn][class*=btn-warning]").click(function (event) {
+            event.preventDefault();
+            let parkingSpaceId = this.id.replace("editParkingSpace", "");
+            handleEditParkingSpace(parkingSpaceId);
+        });
+        $("[class*=btn][class*=btn-danger]").click(function (event) {
+            event.preventDefault();
+            let parkingSpaceId = this.id.replace("deleteParkingSpace", "");
+            handleDeleteParkingSpace(parkingSpaceId);
+        });
     });
 }
 
+async function handleForceFreeParkingSpace(parkingSpaceId) {
+    console.log("Entered force free process");
+};
 
+async function handleEditParkingSpace(parkingSpaceId) {
+    console.log("Entered Edit process");
+};
+
+async function handleDeleteParkingSpace(parkingSpaceId) {
+    console.log("Entered Delete process")
+};
 
 
 
