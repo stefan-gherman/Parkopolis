@@ -212,5 +212,15 @@ namespace Parkopolis.API.Services
             _context.Areas.Update(areaUpdate);
             Save();
         }
+
+        public IEnumerable<ParkingLot> GetAllParkingLotsForUser(string userId)
+        {
+            return _context.ParkingLots.Where(pl => pl.ApplicationUserId == userId);
+        }
+
+        public bool UserExists(string id)
+        {
+            return _context.Users.Any(u => u.Id.Equals(id));
+        }
     }
 }
