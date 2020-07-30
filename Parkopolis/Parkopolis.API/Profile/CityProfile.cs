@@ -12,7 +12,7 @@ namespace Parkopolis.API.Profile
         {
             CreateMap<Models.City, Models.CityDto>().ForMember(dest => dest.AreaCount,
                 opt => opt.MapFrom(source => source.Areas.Count));
-            CreateMap<Models.City, Models.City>();
+            CreateMap<Models.City, Models.CityForDisplayDto>();
         }
     }
 }

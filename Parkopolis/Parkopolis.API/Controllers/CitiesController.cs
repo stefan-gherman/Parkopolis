@@ -33,7 +33,7 @@ namespace Parkopolis.API.Controllers
             {
                 return Ok(_mapper.Map<IEnumerable<CityDto>>(_repository.GetCitiesWithAreaCount()));
             }
-            return Ok(_repository.GetAllCities());
+            return Ok(_mapper.Map <IEnumerable <CityForDisplayDto>>(_repository.GetAllCities()));
            
         }
 

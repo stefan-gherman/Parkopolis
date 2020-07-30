@@ -14,6 +14,7 @@ namespace Parkopolis.API.Models
         public bool IsStateOwned { get; set; }
         public int TotalParkingSpaces { get; set; }
         public bool HasSecurity { get; set; }
+        public string ApplicationUserId { get; set; }
         //public string Owner { get; set; }
         //public DateTime FreeInterval { get; set; }
     }
