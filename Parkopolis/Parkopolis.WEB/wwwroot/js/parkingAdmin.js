@@ -16,7 +16,6 @@ $("#selectParkingLotParkingAdmin").change(function () {
     populateResultingParkingSapces();
 });
 
-//populateParkingLot();
 
 async function populateCitiesDropdown() {
     await $.getJSON('http://localhost:1028/api/cities', function (data) {
@@ -111,12 +110,12 @@ $("#newParkingSpaceSubmit").click(async function (event) {
     if (await $("input[id='hasCarWash']:checked").val() === "on") {
         hasCarWash = true;
     }
-    alert(`hasCarWash: ${hasCarWash}`);
+    console.log(`hasCarWash: ${hasCarWash}`);
     let hasCover = false;
     if (await $("#hasCover").val() === "on") {
         hasCover = true;
     }
-    alert(`hasCover: ${hasCover}`);
+    console.log(`hasCover: ${hasCover}`);
 
     let data = {
         "parkingLotId": parkingLotId,

@@ -27,6 +27,7 @@ namespace Parkopolis.API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetCities()
         {
             return Ok(_repository.GetAllCities());
@@ -34,6 +35,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpGet("{cityId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetCity(int cityId)
         {
             if (!_repository.CityExists(cityId)) return NotFound();
