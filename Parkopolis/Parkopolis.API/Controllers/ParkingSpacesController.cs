@@ -20,7 +20,8 @@ namespace Parkopolis.API.Controllers
             _mapper = mapper;
             _repo = repo;
         }
-        [HttpGet] 
+        [HttpGet]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetParkingSpaces(int cityId, int areaId, int parkingLotId)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
@@ -33,6 +34,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpGet("{parkingSpaceId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetParkingSpace(int cityId, int areaId, int parkingLotId, int parkingSpaceId)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
@@ -144,6 +146,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpDelete("{parkingSpaceId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult DeleteParkingLot(int areaId, int parkingSpaceId)
         {
 

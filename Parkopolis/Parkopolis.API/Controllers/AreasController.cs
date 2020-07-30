@@ -25,6 +25,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpGet]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetAreas(int cityId)
         {
             if(!_repo.CityExists(cityId))
@@ -36,6 +37,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpGet("{areaId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetArea(int cityId, int areaId)
         {
             if (!_repo.CityExists(cityId)) return NotFound();
@@ -67,6 +69,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpDelete("{areaId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult DeleteArea(int cityId, int areaId)
         {
             if(!_repo.CityExists(cityId))
@@ -82,7 +85,7 @@ namespace Parkopolis.API.Controllers
             return NoContent();
         }
         [HttpPut("{areaId}")]
-        [EnableCors]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult UpdateArea (int cityId, int areaId, Area area)
         {
             if (!_repo.CityExists(cityId))

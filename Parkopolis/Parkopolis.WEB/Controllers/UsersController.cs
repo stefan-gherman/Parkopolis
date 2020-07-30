@@ -30,6 +30,7 @@ namespace Parkopolis.WEB.Controllers
 
         // GET: api/<UsersController>
         [HttpGet]
+        [EnableCors("AllowAnyOrigin")]
         public IEnumerable<TempUser> Get()
         {
             
@@ -50,6 +51,7 @@ namespace Parkopolis.WEB.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
+        [EnableCors("AllowAnyOrigin")]
         public TempUser Get(string id)
         {
             TempUser resultUser = new TempUser();

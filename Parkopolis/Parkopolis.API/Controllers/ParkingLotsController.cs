@@ -22,6 +22,7 @@ namespace Parkopolis.API.Controllers
             _repo = repo;
         }
         [HttpGet]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetParkingLots(int cityId, int areaId, bool includeParkingSpots)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
@@ -37,6 +38,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpGet("{parkingLotId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult GetParkingLot(int cityId, int areaId, int parkingLotId, bool includeParkingSpots)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
@@ -72,6 +74,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPut("{parkingLotId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult UpdateParkingLot(int cityId, int areaId, int parkingLotId, [FromBody] ParkingLot parkingLot)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
@@ -93,6 +96,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPatch("{parkingLotId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult PartiallyUpdateParkingLot(int cityId, int areaId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
@@ -137,6 +141,7 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpDelete("{parkingLotId}")]
+        [EnableCors("AllowAnyOrigin")]
         public IActionResult DeleteParkingLot(int cityId, int areaId, int parkingLotId)
         {
             if (!_repo.CityExists(cityId)) return NotFound("City not found");
