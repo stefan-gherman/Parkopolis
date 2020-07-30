@@ -9,7 +9,7 @@ namespace Parkopolis.API.Profile
     {
         public ParkingLotProfile()
         {
-            CreateMap<Models.ParkingLot, Models.ParkingLotDto>();
+            CreateMap<Models.ParkingLot, Models.ParkingLotForDisplayDto>();
         }
     }
 }

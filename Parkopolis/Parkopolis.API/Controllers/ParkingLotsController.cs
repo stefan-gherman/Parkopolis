@@ -6,6 +6,7 @@ using Parkopolis.API.MockData;
 using Parkopolis.API.Models;
 using Parkopolis.API.Services;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Parkopolis.API.Controllers
@@ -34,7 +35,7 @@ namespace Parkopolis.API.Controllers
                 return Ok(_repo.GetParkingLotsIncludingParkingSpacesById(areaId));
             }
 
-            return Ok(_repo.GetParkingLots(areaId));
+            return Ok(_mapper.Map<IEnumerable<ParkingLotForDisplayDto>>(_repo.GetParkingLots(areaId)));
         }
 
         [HttpGet("{parkingLotId}")]
@@ -52,7 +53,7 @@ namespace Parkopolis.API.Controllers
                 return Ok(_repo.GetParkingLotByIdIncludingParkingSpaces(parkingLotId));
             }
 
-            return Ok(_repo.GetParkingLotById(parkingLotId));
+            return Ok(_mapper.Map<ParkingLotForDisplayDto>(_repo.GetParkingLotById(parkingLotId)));
         }
 
         [Route("/users/{userId}/getParkingLots")]
@@ -65,7 +66,7 @@ namespace Parkopolis.API.Controllers
             {
                 return Ok(_repo.GetAllParkingLotsForUserIncludingParkingSpots(userId));
             }
-            return Ok(_repo.GetAllParkingLotsForUser(userId));
+            return Ok(_mapper.Map<IEnumerable<ParkingLotForDisplayDto>>(_repo.GetAllParkingLotsForUser(userId)));
         }
 
 
