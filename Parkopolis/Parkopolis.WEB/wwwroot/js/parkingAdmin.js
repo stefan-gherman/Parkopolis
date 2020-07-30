@@ -74,17 +74,32 @@ async function populateResultingParkingSapces() {
     let cityId = $("#selectCityParkingAdmin").val();
     let areaId = $("#selectAreaParkingAdmin").val();
     let parkingLotId = $("#selectParkingLotParkingAdmin").val();
+    
+    
     await $.getJSON(`http://localhost:1028/api/cities/${cityId}/areas/${areaId}/parkinglots/${parkingLotId}/parkingspaces`, function (data) {
         for (var i = 0; i < data.length; i++) {
-            if (data[i].isTaken === false) {
-                $("#parkingSpaceList").append(
-                    `<a href="#" class="list-group-item list-group-item-action list-group-item-success">${data[i].name}</a>`
-                );
+            let classLink = "list-group-item list-group-item-action list-group-item-success";
+            let forceFreeButtonContent = `<button id="####" class="btn btn-success">Force Free</button>`;
+            if (data[i].isTaken == true) {
+                classLink = "list-group-item list-group-item-action list-group-item-danger";
             } else {
-                $("#parkingSpaceList").append(
-                    `<a href="#" class="list-group-item list-group-item-action list-group-item-danger">${data[i].name}</a>`
-                );
-            }  
+                forceFreeButtonContent = "";
+            }
+            let element = `<a href="#" class="${classLink}">
+                        <div class="container">
+                            <div class="d-flex justify-content-between">
+                                <p>${data[i].name}</p>
+                                <p>
+                                    ${forceFreeButtonContent}
+                                </p>
+                                <p>
+                                    <button id="####" class="btn btn-warning">Edit</button>
+                                    <button id="####" class="btn btn-danger">Delete</button>
+                                </p>
+                            </div>
+                        </div>
+                   </a>`
+            $("#parkingSpaceList").append(element);
         }
     });
 }
