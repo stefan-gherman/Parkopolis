@@ -247,5 +247,14 @@ namespace Parkopolis.API.Services
         {
             return _context.ParkingLots.Include(pl => pl.ParkingSpaces).Where(pl => pl.ApplicationUserId == userId);
         }
+
+        public void DeleteUser(string userId)
+        {
+            _context.ParkingLots.RemoveRange(_context.ParkingLots.Where(pl => pl.ApplicationUserId == userId));
+            Save();
+            var userToRemove = _context.Users.Where(u => u.Id == userId).FirstOrDefault();
+            _context.Users.Remove(userToRemove);
+            Save();
+        }
     }
 }
