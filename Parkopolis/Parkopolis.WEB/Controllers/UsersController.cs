@@ -74,14 +74,16 @@ namespace Parkopolis.WEB.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public void Put(string id, [FromBody] TempUser tempUserFromRequest)
+        public async Task<IActionResult> Put(string id, [FromBody] TempUser tempUserFromRequest)
         {
             
             var user = userManager.FindByIdAsync(id).Result;
             
             user.Type = (UserType)tempUserFromRequest.Rank;
 
-            userManager.UpdateAsync(user);
+            await userManager.UpdateAsync(user);
+
+            return NoContent();
         }
 
             // DELETE api/<UsersController>/5
