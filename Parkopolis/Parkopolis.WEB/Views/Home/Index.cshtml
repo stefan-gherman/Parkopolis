@@ -1,0 +1,47 @@
+﻿@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
+
+
+@{
+    ViewData["Title"] = "Parkopolis";
+}
+
+@if (signInManager.IsSignedIn(User))
+{
+    <p hidden id="loggedInUser">@userManager.GetUserAsync(User).Result.Id</p>
+}
+
+<div id="payingParkingSpaceContainer">
+
+</div>
+<form>
+    <div class="form-group">
+        <select class="form-control" id="selectCityHome">
+            <option value="" disabled selected hidden>City</option>
+        </select>
+    </div>
+</form>
+
+<form>
+    <div class="form-group">
+        <select class="form-control" id="selectAreaHome">
+            <option value="" disabled selected hidden>Area</option>
+        </select>
+    </div>
+</form>
+
+<form>
+    <div class="form-group">
+        <select class="form-control" id="selectParkingLotHome">
+            <option value="" disabled selected hidden>Parking Lot</option>
+        </select>
+    </div>
+</form>
+
+<ul class="list-group" id="resultingParkingSpaces">
+</ul>
+
+@section Scripts {
+    <script src="~/js/home.js"></script>
+
+}

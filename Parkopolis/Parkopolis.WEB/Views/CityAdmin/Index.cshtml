@@ -1,0 +1,87 @@
+﻿@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
+@{
+    ViewData["Title"] = "City Admin";
+}
+
+<h1>City Admin</h1>
+@if (signInManager.IsSignedIn(User) && userManager.GetUserAsync(User).Result.Type.ToString().Equals("Admin")) { 
+
+
+<div id="citiesContainer">
+
+    
+</div>
+<div id="editCityFormContainer">
+
+</div>
+<hr />
+
+@*Add City*@
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control" id="cityName" placeholder="Enter the City name here.">
+    </div>
+    <button id="newCitySubmit" type="submit" class="btn btn-primary">Add City</button>
+</form>
+<hr />
+
+@*Add Area*@
+<form>
+    <div class="form-group">
+        <select class="form-control" id="selectCityAddArea">
+            <option value="" disabled selected hidden>City</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="areaNameAddArea" placeholder="Enter the Area name here.">
+    </div>
+    <button id="newAreaSubmit" type="submit" class="btn btn-primary">Add Area</button>
+</form>
+<hr />
+
+@*Add Parking Lot*@
+<form>
+    <div class="form-group">
+        <select class="form-control" id="selectCityAddParkingLot">
+            <option value="" disabled selected hidden>City</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <select class="form-control" id="selectAreaAddParkingLot">
+            <option value="" disabled selected hidden>Area</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="parkingLotNameAddParkingLot" placeholder="Enter the Parking Lot name here.">
+    </div>
+    <div class="form-group">
+        <select class="form-control" id="selectUserAddParkingLot">
+            <option value="" disabled selected hidden>User</option>
+        </select>
+    </div>
+    <button id="newParkingLotSubmit" type="submit" class="btn btn-primary">Add Parking Lot</button>
+</form>
+<hr />
+<p>Promote User</p>
+<form>
+    <div class="form-group">
+        <select class="form-control" id="selectUserCityAdmin">
+            <option value="" disabled selected hidden>User</option>
+        </select>
+    </div>
+    
+    <button id="makeUserAdmin" type="submit" class="btn btn-primary">Make Admin</button>
+    <button id="makeUserParkinglotOwner" type="submit" class="btn btn-primary">Make Owner</button>
+    <button id="makeUserConsumer" type="submit" class="btn btn-primary">Make Consumer</button>
+</form>
+
+} else
+{
+    <h2>Sorry, this page is not available.</h2>
+}
+
+@section Scripts {
+    <script src="~/js/cityAdmin.js"></script>
+
+}

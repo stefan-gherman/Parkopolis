@@ -7,17 +7,56 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Parkopolis.API.Options;
+using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
+using Parkopolis.API.Context;
+using Microsoft.EntityFrameworkCore;
+using Parkopolis.API.Services;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace Parkopolis.API
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin", 
+                    builder =>
+                    {
+                        builder.WithOrigins("*").SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
+            services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddMvc(option => option.EnableEndpointRouting = false);
+
+            //services.AddSwaggerGen(swaggerGen => {
+            //    swaggerGen.SwaggerDoc("v1", new OpenApiInfo { Title = "a", Version="1"});
+
+            //});
+            var connectionString = Configuration.GetConnectionString("ParkopolisContext");
+            services.AddDbContext<ParkopolisDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IParkopolisRepository, ParkopolisDbRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddSwaggerGen();
+
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -30,8 +69,23 @@ namespace Parkopolis.API
             {
                 app.UseExceptionHandler();
             }
+            app.UseAuthentication();
 
             app.UseMvc();
+
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+
+            app.UseSwagger(option => { option.RouteTemplate = swaggerOptions.JsonRoute; });
+
+            app.UseSwaggerUI(option =>
+            {
+                option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
+                option.RoutePrefix = string.Empty;
+            });
+
+
+
         }
     }
 }
