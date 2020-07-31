@@ -63,7 +63,7 @@ $("#makeUserAdmin").click(async function (event) {
             console.log('fail' + status.code);
         }
     })
-    populateUserDopdown();
+    populateUserDopdowns();
 })
 
 // make user Parking Lot Owner
@@ -98,7 +98,7 @@ $("#makeUserParkinglotOwner").click(async function (event) {
             console.log('fail' + status.code);
         }
     })
-    populateUserDopdown();
+    populateUserDopdowns();
 })
 
 // make user Consumer / Customer
@@ -126,14 +126,14 @@ $("#makeUserConsumer").click(async function (event) {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            console.log("User promoted to Parking Lot Owner successfully.");
+            console.log("User promoted to Customer successfully.");
         },
         error: function (jqXHR, status) {
             console.log(jqXHR);
             console.log('fail' + status.code);
         }
     })
-    populateUserDopdown();
+    populateUserDopdowns();
 })
 
 
