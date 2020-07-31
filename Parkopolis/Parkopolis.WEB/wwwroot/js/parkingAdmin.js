@@ -302,12 +302,7 @@ async function handleDeleteParkingSpace(cityId, areaId, parkingLotId, parkingSpa
     populateResultingParkingSapces();
 };
 
-
-
-
-
-
-
+// Add new parking space
 $("#newParkingSpaceSubmit").click(async function (event) {
     event.preventDefault();
 
@@ -354,7 +349,8 @@ $("#newParkingSpaceSubmit").click(async function (event) {
             console.log('fail' + status.code);
         }
     })
-    populateParkingLot();
+    //populateParkingLot();
+    populateResultingParkingSapces();
 });
 
 async function populateParkingLot() {
