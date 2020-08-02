@@ -173,29 +173,13 @@ namespace Parkopolis.API.Controllers
 
             var parkingLotFromStore = _repo.GetParkingLotById(parkingLotId);
 
-            var parkingLotToPatch = new ParkingLotForUpdateDto()
-            {
-                Name = parkingLotFromStore.Name,
-                AreaId = parkingLotFromStore.AreaId,
-                HasSecurity = parkingLotFromStore.HasSecurity,
-                IsPaid = parkingLotFromStore.IsPaid,
-                IsStateOwned = parkingLotFromStore.IsStateOwned,
-                Location = parkingLotFromStore.Location,
-                TotalParkingSpaces = parkingLotFromStore.TotalParkingSpaces,
-                ApplicationUserId = parkingLotFromStore.ApplicationUserId
-            };
+            var parkingLotToPatch = _mapper.Map<ParkingLotForUpdateDto>(parkingLotFromStore);
 
             if (!_repo.AreaExists(parkingLotToPatch.AreaId)) return NotFound("AreaId From Query is Invalid");
 
             patchDoc.ApplyTo(parkingLotToPatch);
 
-            parkingLotFromStore.Name = parkingLotToPatch.Name;
-            parkingLotFromStore.AreaId = parkingLotToPatch.AreaId;
-            parkingLotFromStore.HasSecurity = parkingLotToPatch.HasSecurity;
-            parkingLotFromStore.IsPaid = parkingLotToPatch.IsPaid;
-            parkingLotFromStore.IsStateOwned = parkingLotToPatch.IsStateOwned;
-            parkingLotFromStore.Location = parkingLotToPatch.Location;
-            parkingLotFromStore.TotalParkingSpaces = parkingLotToPatch.TotalParkingSpaces;
+            _mapper.Map(parkingLotToPatch, parkingLotFromStore);
 
             if (!ModelState.IsValid)
             {
@@ -216,29 +200,13 @@ namespace Parkopolis.API.Controllers
             }
             var parkingLotFromStore = _repo.GetParkingLotById(parkingLotId);
 
-            var parkingLotToPatch = new ParkingLotForUpdateDto()
-            {
-                Name = parkingLotFromStore.Name,
-                AreaId = parkingLotFromStore.AreaId,
-                HasSecurity = parkingLotFromStore.HasSecurity,
-                IsPaid = parkingLotFromStore.IsPaid,
-                IsStateOwned = parkingLotFromStore.IsStateOwned,
-                Location = parkingLotFromStore.Location,
-                TotalParkingSpaces = parkingLotFromStore.TotalParkingSpaces,
-                ApplicationUserId = parkingLotFromStore.ApplicationUserId
-            };
+            var parkingLotToPatch = _mapper.Map<ParkingLotForUpdateDto>(parkingLotFromStore);
 
             if (!_repo.AreaExists(parkingLotToPatch.AreaId)) return NotFound("AreaId From Query is Invalid");
 
             patchDoc.ApplyTo(parkingLotToPatch);
 
-            parkingLotFromStore.Name = parkingLotToPatch.Name;
-            parkingLotFromStore.AreaId = parkingLotToPatch.AreaId;
-            parkingLotFromStore.HasSecurity = parkingLotToPatch.HasSecurity;
-            parkingLotFromStore.IsPaid = parkingLotToPatch.IsPaid;
-            parkingLotFromStore.IsStateOwned = parkingLotToPatch.IsStateOwned;
-            parkingLotFromStore.Location = parkingLotToPatch.Location;
-            parkingLotFromStore.TotalParkingSpaces = parkingLotToPatch.TotalParkingSpaces;
+            _mapper.Map(parkingLotToPatch, parkingLotFromStore);
 
             if (!ModelState.IsValid)
             {
@@ -267,7 +235,6 @@ namespace Parkopolis.API.Controllers
         }
 
 
-        //[HttpGet("{parkingLotId}")]
         [HttpDelete("/users/{userId}/deleteParkingLot/{parkingLotId}")]
        
         [EnableCors("AllowAnyOrigin")]
