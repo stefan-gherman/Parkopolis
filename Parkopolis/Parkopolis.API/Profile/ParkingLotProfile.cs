@@ -10,6 +10,7 @@ namespace Parkopolis.API.Profile
         public ParkingLotProfile()
         {
             CreateMap<Models.ParkingLot, Models.ParkingLotForDisplayDto>();
+            CreateMap<Models.ParkingLot, Models.ParkingLotForUpdateDto>().ReverseMap();
         }
     }
 }
