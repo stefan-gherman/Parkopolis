@@ -256,5 +256,36 @@ namespace Parkopolis.API.Services
             _context.Users.Remove(userToRemove);
             Save();
         }
+
+        public bool AreaIsInCity(int areaId, int cityId)
+        {
+            var area = _context.Areas.Where(a => a.Id == areaId).FirstOrDefault();
+            if (area.CityId == cityId) return true;
+            return false;
+        }
+
+        public bool ParkingLotIsInArea(int areaId, int lotId)
+        {
+            var parkingLot = _context.ParkingLots.Where(pl => pl.Id == lotId).FirstOrDefault();
+            if (parkingLot.AreaId == areaId) return true;
+            return false;
+        }
+
+        public bool ParkingSpaceIsInParkingLot(int parkingSpaceId, int lotId)
+        {
+            var parkingSpace = _context.ParkingSpaces.Where(ps => ps.Id == parkingSpaceId).FirstOrDefault();
+            if (parkingSpace.ParkingLotId == lotId) return true;
+            return false;
+        }
+
+        public bool UserOwnsParkingLot(int parkingLotId, string userId)
+        {
+            var parkingLot = _context.ParkingLots.Where(pl => pl.Id == parkingLotId).FirstOrDefault();
+            if (parkingLot.ApplicationUserId.Equals(userId))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
