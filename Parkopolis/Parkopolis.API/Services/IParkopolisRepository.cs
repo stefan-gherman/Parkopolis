@@ -61,6 +61,12 @@ namespace Parkopolis.API.Services
         public IEnumerable<ParkingLot> GetAllParkingLotsForUserIncludingParkingSpots(string userId);
         public void DeleteUser(string userId);
 
+        //Additional Validations
+        public bool AreaIsInCity(int areaId, int cityId);
+        public bool ParkingLotIsInArea (int areaId, int lotId);
+        public bool ParkingSpaceIsInParkingLot(int parkingSpaceId, int lotId);
+        public bool UserOwnsParkingLot(int parkingLotId, string userId);
+
         //User Queries
         public bool UserExists(string id);
     }
