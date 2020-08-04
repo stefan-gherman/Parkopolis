@@ -26,9 +26,9 @@ namespace Parkopolis.API.Controllers
         [HttpGet]
         public IActionResult GetParkingLots(int cityId, int areaId, bool includeParkingSpots)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
+            string validationResult = ValidateCityArea(cityId,areaId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
 
             if (includeParkingSpots)
             {
@@ -41,12 +41,8 @@ namespace Parkopolis.API.Controllers
         [HttpGet("{parkingLotId}")]
         public IActionResult GetParkingLot(int cityId, int areaId, int parkingLotId, bool includeParkingSpots)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
-
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
-
+            string validationResult = ValidateCityAreaLot(cityId, areaId, parkingLotId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
 
             if (includeParkingSpots)
             {
@@ -74,10 +70,9 @@ namespace Parkopolis.API.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult CreateParkingLot(int cityId, int areaId, [FromBody] ParkingLot parkingLot)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
+            string validationResult = ValidateCityArea(cityId, areaId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             //parkingLot.AreaId = areaId;
             if (!ModelState.IsValid)
             {
@@ -113,12 +108,9 @@ namespace Parkopolis.API.Controllers
         [HttpPut("{parkingLotId}")]
         public IActionResult UpdateParkingLot(int cityId, int areaId, int parkingLotId, [FromBody] ParkingLot parkingLot)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
-
+            string validationResult = ValidateCityAreaLot(cityId, areaId, parkingLotId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             if (!_repo.AreaExists(parkingLot.AreaId)) return NotFound("AreaId From Query is Invalid");
 
             parkingLot.Id = parkingLotId;
@@ -135,16 +127,9 @@ namespace Parkopolis.API.Controllers
         [HttpPut("/users/{userId}/editparkinglot/{parkingLotId}")]
         public IActionResult UpdateParkingLotForUser(string userId, int cityId, int areaId, int parkingLotId, [FromBody] ParkingLot parkingLot)
         {
-            if (!_repo.UserExists(userId))
-            {
-                return NotFound("User not found");
-            }
 
-            if(!_repo.ParkingLotExists(parkingLotId))
-            {
-                return NotFound("Lot not found");
-            }
-
+            string validationResult = ValidateUserLot(userId, parkingLotId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             if (!ModelState.IsValid)
             {
                 return BadRequest("Your query is badly formatted");
@@ -164,13 +149,9 @@ namespace Parkopolis.API.Controllers
         [HttpPatch("{parkingLotId}")]
         public IActionResult PartiallyUpdateParkingLot(int cityId, int areaId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
-
-
+            string validationResult = ValidateCityAreaLot(cityId, areaId, parkingLotId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             var parkingLotFromStore = _repo.GetParkingLotById(parkingLotId);
 
             var parkingLotToPatch = _mapper.Map<ParkingLotForUpdateDto>(parkingLotFromStore);
@@ -192,12 +173,10 @@ namespace Parkopolis.API.Controllers
 
         [HttpPatch("/users/{userId}/editparkinglot/{parkingLotId}")]
         [EnableCors("AllowAnyOrigin")]
-        public IActionResult PartiallyUpdateParkingLot(string userId, int cityId, int areaId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
+        public IActionResult PartiallyUpdateParkingLot(string userId, int parkingLotId, [FromBody] JsonPatchDocument<ParkingLotForUpdateDto> patchDoc)
         {
-            if (!_repo.UserExists(userId))
-            {
-                return NotFound("User not found");
-            }
+            string validationResult = ValidateUserLot(userId, parkingLotId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             var parkingLotFromStore = _repo.GetParkingLotById(parkingLotId);
 
             var parkingLotToPatch = _mapper.Map<ParkingLotForUpdateDto>(parkingLotFromStore);
@@ -219,12 +198,9 @@ namespace Parkopolis.API.Controllers
         [HttpDelete("{parkingLotId}")]
         public IActionResult DeleteParkingLot(int cityId, int areaId, int parkingLotId)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Lot not found");
-
+            string validationResult = ValidateCityAreaLot(cityId, areaId, parkingLotId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             if (!ModelState.IsValid)
             {
                 return BadRequest("Your query is badly formatted");
@@ -240,12 +216,8 @@ namespace Parkopolis.API.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult DeleteParkingLotForUser(string userId, int cityId, int areaId, int parkingLotId)
         {
-            if (!_repo.UserExists(userId))
-            {
-                return NotFound("User not found");
-            }
-
-
+            string validationResult = ValidateUserLot(userId, parkingLotId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             if (!ModelState.IsValid)
             {
                 return BadRequest("Your query is badly formatted");
@@ -267,6 +239,44 @@ namespace Parkopolis.API.Controllers
 
             _repo.DeleteUser(userId);
             return NoContent();
+        }
+
+        public string ValidateCityArea(int cityId, int areaId)
+        {
+            if (!_repo.CityExists(cityId)) return "City not found";
+
+            if (!_repo.AreaExists(areaId)) return "Area not found";
+
+            if (!_repo.AreaIsInCity(areaId, cityId)) return "Area not found";
+
+            return "Ok";
+        }
+
+        public string ValidateCityAreaLot(int cityId, int areaId, int parkingLotId)
+        {
+            if (!_repo.CityExists(cityId)) return "City not found";
+            if (!_repo.AreaExists(areaId)) return "Area not found";
+            if (!_repo.AreaIsInCity(areaId, cityId)) return "Area not found";
+            if (!_repo.ParkingLotExists(parkingLotId)) return "Parking Lot not found!";
+            if (!_repo.ParkingLotIsInArea(areaId, parkingLotId)) return "Parking Lot not found!";
+
+            return "Ok";
+        }
+
+        public string ValidateUserLot(string userId, int parkingLotId)
+        {
+            if (!_repo.UserExists(userId))
+            {
+                return "User not found";
+            }
+
+            if (!_repo.ParkingLotExists(parkingLotId))
+            {
+                return "Lot not found";
+            }
+
+            if (!_repo.UserOwnsParkingLot(parkingLotId, userId)) return "Parking Lot lot not found";
+            return "Ok";
         }
     }
 }

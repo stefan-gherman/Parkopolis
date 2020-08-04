@@ -36,16 +36,18 @@ namespace Parkopolis.API.Controllers
             {
                 return Ok(_mapper.Map<IEnumerable<AreaForDisplayDto>>(_repo.GetAreasWithParkingLotCount(cityId)));
             }
-            return Ok(_repo.GetAllAreasForCity(cityId));
+            return Ok(_mapper.Map<IEnumerable<AreaForDisplayNoCountDto>>(_repo.GetAllAreasForCity(cityId)));
 
         }
 
         [HttpGet("{areaId}")]
         public IActionResult GetArea(int cityId, int areaId, bool includeParkingLotsCount)
         {
-            if (!_repo.CityExists(cityId)) return NotFound();
+            if (!_repo.CityExists(cityId)) return NotFound("City doesn't exist");
 
-            if (!_repo.AreaExists(areaId)) return NotFound();
+            if (!_repo.AreaExists(areaId)) return NotFound("Area doesn't exist");
+
+            if (!_repo.AreaIsInCity(areaId, cityId)) return NotFound("Area doesn't exist");
 
             var result = _repo.GetAreaById(areaId);
 

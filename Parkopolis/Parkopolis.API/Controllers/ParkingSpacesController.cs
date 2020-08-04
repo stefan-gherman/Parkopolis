@@ -23,11 +23,9 @@ namespace Parkopolis.API.Controllers
         [HttpGet]
         public IActionResult GetParkingSpaces(int cityId, int areaId, int parkingLotId)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
+            string validationResult = ValidateCityAreaLot(cityId, areaId, parkingLotId);
 
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             return Ok(_repo.GetParkingSpaces(parkingLotId));
 
         }
@@ -35,14 +33,8 @@ namespace Parkopolis.API.Controllers
         [HttpGet("{parkingSpaceId}")]
         public IActionResult GetParkingSpace(int cityId, int areaId, int parkingLotId, int parkingSpaceId)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
-
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
-
-            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return NotFound("Parking space not found");
-
+            string validationResult = ValidateCityAreaLotSpace(cityId, areaId, parkingLotId, parkingSpaceId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             return Ok(_repo.GetParkingSpaceById(parkingSpaceId));
 
         }
@@ -50,11 +42,9 @@ namespace Parkopolis.API.Controllers
         [HttpGet("/users/{userId}/parkingspacesviewer/{parkingLotId}/getparkingspace/{parkingSpaceId}")]
         public IActionResult GetParkingSpaceFromUser (string userId, int parkingLotId, int parkingSpaceId)
         {
-            if (!_repo.UserExists(userId)) return NotFound("User Not Found");
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
 
-            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return NotFound("Parking space not found");
-
+            string validationResult = ValidateUserLotSpace(userId, parkingLotId, parkingSpaceId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             return Ok(_repo.GetParkingSpaceById(parkingSpaceId));
         }
 
@@ -62,12 +52,10 @@ namespace Parkopolis.API.Controllers
         [EnableCors("AllowAnyOrigin")]
         public IActionResult CreateParkingSpace(int cityId, int areaId, int parkingLotId, [FromBody] ParkingSpace parkingSpace)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
+            string validationResult = ValidateCityAreaLot(cityId, areaId, parkingLotId);
 
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
-
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             if (!_repo.ParkingLotExists(parkingSpace.ParkingLotId)) return NotFound("Invalid Parking Lot From Query");
             if (!ModelState.IsValid)
             {
@@ -98,13 +86,8 @@ namespace Parkopolis.API.Controllers
         public IActionResult UpdateParkingSpace(int cityId, int areaId, int parkingLotId, int parkingSpaceId, [FromBody] ParkingSpace parkingSpace)
         {
 
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
-
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
-
-            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return NotFound("Parking space not found");
+            string validationResult = ValidateCityAreaLotSpace(cityId, areaId, parkingLotId, parkingSpaceId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
 
             if (!_repo.ParkingLotExists(parkingSpace.ParkingLotId)) return NotFound("Invalid Parking Lot From Query");
 
@@ -120,11 +103,11 @@ namespace Parkopolis.API.Controllers
         }
 
         [HttpPut("/users/{userId}/lotmanager/{parkingLotId}/editparkingspace/{parkingSpaceId}")]
-        public IActionResult UpdateParkingLotFromUser (string userId, int parkingLotId, int parkingSpaceId,  ParkingSpace parkingSpace )
+        public IActionResult UpdateParkingSpaceFromUser (string userId, int parkingLotId, int parkingSpaceId,  ParkingSpace parkingSpace )
         {
-            if (!_repo.UserExists(userId)) return NotFound("User Not Found");
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
-            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return NotFound("Parking space not found");
+
+            string validationResult = ValidateUserLotSpace(userId, parkingLotId, parkingSpaceId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
 
             if (!_repo.ParkingLotExists(parkingSpace.ParkingLotId)) return NotFound("Invalid Parking Lot From Query");
             parkingSpace.Id = parkingSpaceId;
@@ -143,15 +126,10 @@ namespace Parkopolis.API.Controllers
         public IActionResult PartiallyUpdateParkingSpace(int cityId, int areaId, int parkingLotId, int parkingSpaceId,
             [FromBody] JsonPatchDocument<ParkingSpaceForUpdateDto> patchDoc)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
 
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
+            string validationResult = ValidateCityAreaLotSpace(cityId, areaId, parkingLotId, parkingSpaceId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
 
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
-
-            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return NotFound("Parking space not found");
-
-            
             var parkingSpaceFromStore = _repo.GetParkingSpaceById(parkingSpaceId);
 
             var parkingSpaceToPatch = _mapper.Map<ParkingSpaceForUpdateDto>(parkingSpaceFromStore);
@@ -176,11 +154,8 @@ namespace Parkopolis.API.Controllers
         [HttpPatch("/users/{userId}/lotmanager/{parkingLotId}/editparkingspace/{parkingSpaceId}")]
         public IActionResult PartialyUpdateParkingSpaceFromUser (string userId, int parkingLotId, int parkingSpaceId, [FromBody] JsonPatchDocument<ParkingSpaceForUpdateDto> patchDoc)
         {
-            if (!_repo.UserExists(userId)) return NotFound("User Not Found");
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
-
-            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return NotFound("Parking space not found");
-
+            string validationResult = ValidateUserLotSpace(userId, parkingLotId, parkingSpaceId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
 
             var parkingSpaceFromStore = _repo.GetParkingSpaceById(parkingSpaceId);
 
@@ -206,11 +181,9 @@ namespace Parkopolis.API.Controllers
         [HttpDelete("{parkingSpaceId}")]
         public IActionResult DeleteParkingSpace(int cityId, int areaId,int parkingLotId, int parkingSpaceId)
         {
-            if (!_repo.CityExists(cityId)) return NotFound("City not found");
-            if (!_repo.AreaExists(areaId)) return NotFound("Area not found");
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Parking Lot not found!");
-            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return NotFound("Parking space not found");
 
+            string validationResult = ValidateCityAreaLotSpace(cityId, areaId, parkingLotId, parkingSpaceId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
             _repo.RemoveParkingSpace(_repo.GetParkingSpaceById(parkingSpaceId));
 
             return NoContent();
@@ -220,13 +193,46 @@ namespace Parkopolis.API.Controllers
 
        public IActionResult DeleteParkingSpaceFromUser(string userId, int parkingLotId, int parkingSpaceId)
         {
-            if (!_repo.UserExists(userId)) return NotFound("User Not Found");
-            if (!_repo.ParkingLotExists(parkingLotId)) return NotFound("Invalid Parking Lot From Query");
-            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return NotFound("Parking space not found");
+            string validationResult = ValidateUserLotSpace(userId, parkingLotId, parkingSpaceId);
+            if (!validationResult.Equals("Ok")) return NotFound(validationResult);
 
             _repo.RemoveParkingSpace(_repo.GetParkingSpaceById(parkingSpaceId));
 
             return NoContent();
+        }
+
+        public string ValidateCityAreaLot(int cityId, int areaId, int parkingLotId)
+        {
+            if (!_repo.CityExists(cityId)) return "City not found";
+            if (!_repo.AreaExists(areaId)) return"Area not found";
+            if (!_repo.AreaIsInCity(areaId, cityId)) return "Area not found";
+            if (!_repo.ParkingLotExists(parkingLotId)) return "Parking Lot not found!";
+            if (!_repo.ParkingLotIsInArea(areaId, parkingLotId)) return"Parking Lot not found!";
+
+            return "Ok";
+        }
+
+        public string ValidateCityAreaLotSpace(int cityId, int areaId, int parkingLotId, int parkingSpaceId)
+        {
+            if(!_repo.CityExists(cityId)) return"City not found";
+
+            if (!_repo.AreaExists(areaId)) return "Area not found";
+            if (!_repo.AreaIsInCity(areaId, cityId)) return "Area not found";
+            if (!_repo.ParkingLotExists(parkingLotId)) return"Parking Lot not found!";
+            if (!_repo.ParkingLotIsInArea(areaId, parkingLotId)) return "Parking Lot not found!";
+            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return"Parking space not found";
+            if (!_repo.ParkingSpaceIsInParkingLot(parkingSpaceId, parkingLotId)) return "Parking Space not Found";
+            return "OK";
+        }
+
+        public string ValidateUserLotSpace(string userId, int parkingLotId, int parkingSpaceId)
+        {
+            if (!_repo.UserExists(userId)) return "User Not Found";
+            if (!_repo.ParkingLotExists(parkingLotId)) return "Parking Lot not found!";
+            if (!_repo.UserOwnsParkingLot(parkingLotId,userId)) return "Parking lot not found!";
+            if (!_repo.ParkingSpaceExists(parkingSpaceId)) return "Parking space not found";
+            if (!_repo.ParkingSpaceIsInParkingLot(parkingSpaceId, parkingLotId)) return "Parking space not found";
+            return "Ok";
         }
     }
 }

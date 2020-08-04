@@ -47,7 +47,7 @@ namespace Parkopolis.API.Controllers
             {
                 return Ok(_mapper.Map<CityDto>(_repository.GetCityWithAreaCount(cityId)));
             }
-            return Ok(_mapper.Map<CityDto>(_repository.GetCityById(cityId)));
+            return Ok(_mapper.Map<CityForDisplayDto>(_repository.GetCityById(cityId)));
         }
 
         [HttpPost]
