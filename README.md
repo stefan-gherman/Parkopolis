@@ -2,7 +2,7 @@
 
 Application aimed at helping drivers find parking spaces in crowded metropolitan areas.
 
-It's purpose is to reduce the stress of finding a parking space.
+Its purpose is to reduce the stress of finding a parking space.
 
 The app has multiple roles and permissions for admins, consumers and parking lot owners.
 
